@@ -1,0 +1,77 @@
+<apex:page showHeader="false" docType="html-5.0" standardStylesheets="false" controller="MobileHomeController" sidebar="false">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
+
+<style>
+
+.hpm_Wrapper .hpm_Header #HP_HeaderImgWrapper{
+  padding: 10px;
+}
+.hpm_Wrapper .hpm_Header img{
+  width:100%
+}
+.hpm_Wrapper .hpm_Content{
+  padding: 10px;
+}
+.hpm_Wrapper .hpm_Content .hpm_label { 
+  font-family: "ProximaNovaSoft-Regular", Calibri, 
+           "Gill Sans", "Gill Sans MT", Candara, Segoe, 
+           "Segoe UI", Arial, sans-serif;
+  font-size:20px !important;
+  padding: 20px 12px 0;
+  line-height: 20px;
+  height: 40px;
+}
+.hpm_Wrapper .hpm_Content a{
+	text-decoration: none;
+}
+.hpm_Wrapper .hpm_Content .trSetings {
+  text-align: center;
+  padding: 5px;
+  width: 50%;
+  float: left;
+}
+
+.hpm_Wrapper .hpm_Content .trSetings img{
+  width: 75%;
+}
+.hpm_Wrapper .hpm_Content .adjustHeight {
+  border-radius: 15px;
+}
+</style>
+	<apex:stylesheet value="{!URLFOR($Resource.SF1Bootstrap, 'dist/css/bootstrap.css')}" />
+ </head>
+ <body>
+    
+ <div class="hpm_Wrapper">
+    <div class="hpm_Header">
+        <img id="HP_HeaderImg" alt="" src="{!HP_HeaderObj.Image_URL__c}" />
+    </div>
+
+    <div class="hpm_Content">
+    	<apex:repeat value="{!HP_MobileComponentobjList}" var="HP_MobileComponentobj">
+			<div class="trSetings">
+			    <div style="background:{!HP_MobileComponentobj.Hex_Color__c};" class="adjustHeight">
+				<a href="{!HP_MobileComponentobj.Link_URL__c}">
+				<div class="hpm_label" style="color:{!HP_MobileComponentobj.Font_Color__c};">{!HP_MobileComponentobj.Field_Title__c}</div>
+			    		<img alt="{!HP_MobileComponentobj.Field_Title__c}"
+			            src="{!HP_MobileComponentobj.Image_URL__c}" />
+			    	</a>
+			    </div>
+			</div>
+        </apex:repeat>
+   </div>
+</div>
+
+
+    <!-- Script code -->
+    <!--Jquery Links -->
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+
+
+    <script>
+  
+    </script>
+    <!--End Script code -->
+</body>
+</apex:page>

@@ -1,0 +1,46 @@
+<apex:page standardStylesheets="false" sidebar="false" showHeader="false" controller="HP_Picture">
+	<apex:stylesheet value="{!URLFOR($Resource.ImageSlider, 'BxSlider/css/jquery.bxslider.css')}" />
+
+	<!-- css code -->
+	<apex:stylesheet value="{!$Resource.acfCommStyles}" />
+	<!-- End css code -->
+
+	<!-- Page Design -->
+	<div class="hp_rightCompWrapper">
+		<!--<div class="hp_header">School Photos</div>-->
+		<div class="hp_inner">
+		<ul class="bxslider">
+			<apex:repeat value="{!HP_PictureObjList}" var="HP_PictureObj">
+
+				<li><a href="#"><img alt=""
+						src="{!HP_PictureObj.Logo_URL__c}" /></a></li>
+
+			</apex:repeat>
+		</ul>
+		</div>
+	</div>
+	<!-- End Page Design -->
+
+
+<!-- Script code -->
+
+	<!-- Image slider links -->
+	<apex:includeScript value="{!URLFOR($Resource.ImageSlider, 'BxSlider/js/jquery.min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.ImageSlider, 'BxSlider/js/jquery.bxslider.js')}" />
+
+	<!-- Image Slider code -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.bxslider').bxSlider({
+				mode : 'fade',
+				captions : true,
+				auto : true,
+				autoControls : false,
+				pager : false,
+				controls : false
+			});
+		});
+	</script>
+	
+<!--End Script code -->
+</apex:page>

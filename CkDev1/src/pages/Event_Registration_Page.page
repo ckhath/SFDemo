@@ -1,0 +1,28 @@
+<apex:page standardStylesheets="false" sidebar="false"
+	showHeader="false" controller="EventRegistrationClass">
+	<!-- 	<apex:stylesheet value="{!URLFOR($Resource.ImageSlider, 'BxSlider/css/jquery.bxslider.css')}" /> -->
+
+	<head>
+		<apex:stylesheet value="{!$Resource.acfCommStyles}" />
+		<base target="_parent" />
+	</head>
+
+	<!-- Page Design -->
+	<div class="hp_rightCompWrapper">
+		<!--<div class="hp_header">Event Registration</div>-->
+		<div>
+<!-- 			<ul > -->
+				<apex:repeat value="{!HP_EventRegistrationObjList}" var="HP_EventRegistrationObj">
+
+					<a href="{!HP_EventRegistrationObj.Image_Link__c}"><img alt="" class="ImageWrapper"
+							src="{!HP_EventRegistrationObj.Image_Url__c}" /></a>
+
+				</apex:repeat>
+<!-- 			</ul> -->
+		</div>
+	</div>
+	<!-- End Page Design -->
+
+
+
+</apex:page>

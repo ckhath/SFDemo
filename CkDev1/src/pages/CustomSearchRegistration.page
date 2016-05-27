@@ -1,0 +1,213 @@
+<apex:page controller="CustomSearchRegistrationController" showHeader="false" sidebar="false">
+<meta name="viewport" content="width=device-width, initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no"></meta>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js" ></script>
+<link href="{!URLFOR($Resource.CommunitySpinnerZip, 'Spinner.css')}" rel="stylesheet"/>
+<style>
+.message {
+        border-style: none !important;
+        background-color: white !important;
+        padding: 6px 90px 6px 6px;
+}
+.message .messageText h4{
+    display:none;
+}
+.errorM3 .msgIcon, .errorMedium {
+background-image: url({!URLFOR($Resource.ErrorIcon,'/ErrorIcon.jpg')});
+
+    width: 16px;
+    height: 16px;
+}
+    .btn{
+        color: #333;
+        margin: 1px;
+        padding: 2px 3px;
+        border: 1px solid #7f7f7f !important;
+        border-bottom-color: #7f7f7f;
+        background: #33CCCC!important;
+        font-weight: bold;
+        font-size: .9em;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+       /* padding: 4px 51px !important; */
+        margin: 18px !important;
+    }
+    .ds_webContent{
+        text-align: justify;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+    .inputTextClass{
+        width: 100%;
+    }
+    .inputTextEmailClass{
+        margin-left: -25%;
+    }
+    .selectOptionClass{
+        width: 100%
+    }
+    .StudentIdPanel{
+    }
+    .FormerEmailPanel{
+    }
+    .alignLabelText {
+        margin-right: 20px;
+    }
+    html, body {
+        height: 100%;
+        min-height: 100%;
+        background-color: #B2B2B2;
+    }
+    .inputFields {
+        width: 100%;
+    }
+    .inputFields .row {
+        text-align: left;
+        margin-left: 5%;
+        margin-bottom: 10px;
+    }  
+    .inputFields .row .label {
+        display: inline-block;
+        width: 20%;
+    }
+    .inputFields .row .field {
+        display: inline-block;
+        width: 30%;
+    }
+     #loading-curtain-div {
+        height:0px;
+        width:100%;
+        position:absolute;
+        z-index:5;
+        //-webkit-transition: all 0.30s ease-out;
+        //-moz-transition: all 0.30s ease-out;
+    }
+    .g-recaptcha {
+        padding-bottom: 20px;
+    }
+    .wrapper{ background-color: white;width: 50%;margin-top: 0px;padding-top: 0px; }
+    body input.btn { padding: 10px 30px; }
+
+    /* mobile css */
+    .mobile .wrapper { width: 100%; }
+    .mobile .inputFields .row .label { width: 30%; }
+    .mobile .inputFields .row .field { width: 50%; }
+</style>
+    <center>
+        <apex:form id="frmRegister">
+        <script>
+            $( document ).ready(function() {
+                $.getScript("https://www.google.com/recaptcha/api.js");
+                if({!mobile})
+                {
+                    $('body').addClass('mobile');
+                }
+            });
+
+            function showLoadingDiv() 
+            {
+                $('.inputFields').html('');
+                $('.ds_webContent').hide();
+                $('.inputFields').append('<div class="spinner medium"></div>');
+            }
+        
+            function hideLoadingDiv() 
+            {
+                $('.inputFields').removeClass("spinnerCenter");
+                $('.ds_webContent').show();   
+            }
+        </script>
+        <apex:actionStatus id="save-lead-status" onstart="showLoadingDiv();" onstop="hideLoadingDiv();"/>
+        <div style="background-color: #B2B2B2;"><br/>
+        <div class="wrapper">
+        <div id="logo_wrapper"><img id="logo" class="logo_salesforce" src="/connect/servlet/servlet.ImageServer?id=015o0000001ZbMV&oid=00Do0000000eYIG" alt="Salesforce" border="0" style="margin-top: 10px;"></img></div><br/>
+            <apex:pageMessages id="error"/>
+            <apex:outputPanel rendered="{!IsInfoWindow}">
+                 <apex:outputText value="{!messageBody}" escape="false"/><br/>
+                <apex:commandButton value="Close" rerender="frmRegister" action="{!clearFields}"/>
+            </apex:outputPanel>
+            <apex:outputPanel id="wrapperPannel" rendered="{!!IsInfoWindow}">
+            <div id="loading-curtain-div"/>
+            <div style="border: 1px solid #E6E6E6;width: 95%;"><br/>
+<!--                <apex:panelGrid columns="2" style="margin-top:1em;">  -->
+                    <div class="ds_webContent">
+                            <b><apex:outputText value="{!communityWebContent.Title__c}" escape="false"/></b><br/><br/>
+                            <apex:outputText value="{!communityWebContent.Page_Content__c}" escape="false"/>
+                     </div><br/><br/>
+                    <div class="inputFields">
+                        <div class="row">
+                            <div class="label"><apex:outputLabel value="First Name *" for="firstName" styleClass="alignLabelText"/></div>
+                            <div class="field"><apex:inputText id="firstName" value="{!firstName}" label="First Name" styleClass="inputTextClass"/></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="label"><apex:outputLabel value="Last Name *" for="lastName" styleClass="alignLabelText"/></div>
+                            <div class="field"><apex:inputText id="lastName" value="{!lastName}" label="Last Name" styleClass="inputTextClass"/></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="label"><apex:outputLabel value="Email *" for="email" styleClass="alignLabelText"/></div>
+                            <div class="field"><apex:inputText id="email" value="{!email}" label="Current Email" styleClass="inputTextClass"/></div>
+                        </div> 
+
+                          <apex:outputPanel id="wrapperRadioPannel" rendered="{!!IsInfoWindow}">
+                            <div class="row">    
+                                <div class="label"><apex:outputLabel value="Search By" styleClass="alignLabelText" /></div>
+                                <div class="field"><apex:selectlist value="{!selectedSearchOption}" size="1" styleClass="selectOptionClass">
+                                    <apex:selectOptions value="{!SearchSelectionCriteria}"/>                                        
+                                    <apex:actionSupport event="onchange" reRender="studentIdPanel, classYearAndDegreePanel" />
+                                </apex:selectlist></div>
+                            </div>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel id="studentIdPanel">
+                            <apex:outputPanel rendered="{!IF(selectedSearchOption == 'Student_Id', true, false)}">
+                            <div class="row">
+                                <div class="label"><apex:outputLabel value="Student ID *" for="student id" style=""/></div>
+                                <div class="field"><apex:inputText id="studentId" value="{!studentId}" label="Student ID" styleClass="StudentIdPanel"/></div>
+                            </div>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+
+                        <!--<apex:outputPanel id="classYearAndDegreePanel">
+                            <apex:outputPanel rendered="{!IF(selectedSearchOption == 'Former_Email', true, false)}">
+                            <div class="row">
+                                <div class="label"><apex:outputLabel value="Email *" for="formerEmail" style=""/></div>
+                                <div class="field"><apex:inputText id="formerEmail" value="{!formerEmail}" label="Former Email" styleClass="FormerEmailPanel"/></div>
+                            </div> -->
+    <!--                         <apex:outputLabel value="Degree" for="degree"/> -->
+    <!--                         <apex:selectList value="{!selectedDegree}" size="1"> -->
+    <!--                             <apex:selectOptions value="{!DegreeList}"/> -->
+    <!--                         </apex:selectList><p/> -->
+                        <!--    </apex:outputPanel>
+                        </apex:outputPanel> -->
+                    
+
+<!--                  </apex:panelGrid>  -->
+                    <apex:commandButton action="{!checkRegistrationFlow}" value="Submit" id="submit" status="save-lead-status" rerender="frmRegister"  styleClass="SubmitButton" />
+                    <div class="g-recaptcha" data-sitekey="6Lcbaw0TAAAAAB8vZRwMTTdp_REyXXVDifMCc3P6"></div>
+                </div>
+             </div><br/>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!IsTryAgain==true && isPasswordReset==false}">
+                <apex:commandButton value="Try Again" rerender="frmRegister" action="{!clearFields}"/>&nbsp;&nbsp;&nbsp;
+                <apex:commandButton action="{!redirectToMoreInformation}" rerender="frmRegister" value="Send to Support"/>
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!isPasswordReset==true && IsTryAgain==true}">
+                <apex:commandButton value="Password Reset" action="{!resetUserPassword}"/>&nbsp;&nbsp;&nbsp;
+                <apex:commandButton action="{!redirectToMoreInformation}" rerender="frmRegister" value="Cancel"/>
+            </apex:outputPanel>
+        </div><br/>
+        </div>
+        </apex:form>
+    </center>
+    <script>
+    //method to redirect to more information page
+    function MoreInformation(firstName, lastName, email){
+        window.open('/alumni/apex/MoreInformationRequired?firstname=' + firstName + '&lastname=' + lastName + '&email=' + email);
+    }
+    
+</script>
+
+</apex:page>

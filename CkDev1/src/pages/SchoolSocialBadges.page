@@ -1,0 +1,14 @@
+<apex:page controller="HP_SchoolSocialBadges" standardStylesheets="false" sidebar="false" showHeader="false">
+
+	<apex:stylesheet value="{!$Resource.acfCommStyles}" />
+
+	<div class="hp_rightCompWrapper">
+		<apex:repeat value="{!HP_SchoolSocialBadgesObjList}" var="HP_SchoolSocialBadgesObj">
+			<span class="hp_Icons">
+			<a href="{!HP_SchoolSocialBadgesObj.URL__c}" target="_blank"> 
+				<img alt="" src="{!HP_SchoolSocialBadgesObj.Logo_URL__c}" />
+			</a>
+			</span>
+		</apex:repeat>
+	</div>
+</apex:page>

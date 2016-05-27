@@ -1,0 +1,68 @@
+<apex:page controller="CommunityExperienceController" showHeader="true" sidebar="false" action="{!init}">
+	<apex:stylesheet value="{!$Resource.acfCommStyles}" />
+	<script src="https://code.jquery.com/jquery-2.1.3.min.js"/>
+	<apex:form id="frmCommunityExperience">
+		<script type="text/javascript">
+		var urlHomeParam = '/community/home/home.jsp';
+		var paramName = 'isCommExperience';
+
+		$(document).ready(function() {
+			initMobile();
+		});
+
+		function initMobile() {
+				//Sophak Added for Mobile resposive.    
+				if (navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i) != null){
+				//if (navigator.userAgent.match(/Chrome/i) != null) {
+					mobile = true;
+					var fileref = document.createElement('script')
+					fileref.setAttribute("type", "text/javascript")
+					fileref
+							.setAttribute("src",
+									"https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js")
+					document.getElementsByTagName("head")[0]
+							.appendChild(fileref);
+				} else {
+					mobile = false;
+					$('body').addClass('pc');
+				}
+				populateMobile(mobile);
+			}
+
+
+		//Method to redirect user to home page
+		function checkUrl(){
+			var urlParam = '{!homeUrl}';
+			var homeUrlMobile = '{!homeUrlMobile}';
+			if(mobile)
+			{
+				if(homeUrlMobile != null){
+					window.open(homeUrlMobile,'_parent');
+				}//End If
+			}
+			else
+			{
+				if(urlParam != null){
+					window.open(urlParam,'_parent');
+				}//End If
+			}
+		}//End Function
+	
+	</script>
+	
+	<apex:actionFunction name="populateMobile" action="{!populateMobile}" rerender="theForm">
+            <apex:param name="p1" value="" assignTo="{!mobile}" />
+        </apex:actionFunction>
+<!--<apex:commandbutton action="{!redirectButtonLogic}" value="Redirect"/>-->
+	<div class="ds_toolpanel">
+	<div class="ds_buttons">
+		<apex:selectList size="1" value="{!communityExperienceSelected}">
+      		<apex:selectOptions value="{!communityExperienceOptions}"/>
+    	</apex:selectList>
+    	<div>&nbsp;</div>
+<!--     	<apex:commandbutton value="Go" action="{!updateCommunityExperience}" oncomplete="checkUrl();" rerender="frmCommunityExperience"/> -->
+			<apex:commandbutton value="Go" action="{!updateCommunityExperience}" rerender="frmCommunityExperience"/>
+	</div>
+	</div>
+	</apex:form>
+</apex:page>

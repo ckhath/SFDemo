@@ -1,0 +1,14 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+<html>
+   <head>
+      
+   </head>
+   
+   <body>
+      <p>To continue authentication to JSTOR, please click
+      <A href="https://www.jstor.org">here</A>.
+     </p>
+    
+   </body>
+</html>
+</apex:page>

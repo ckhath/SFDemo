@@ -1,0 +1,20 @@
+<apex:page showHeader="false" sidebar="false" controller="MobileLinkPageController" >
+    <style>
+     .Content { background-color: #6C91B9; width: 100%; color: #fff; padding: 10px; }
+     .center { }
+     .div1{ border:solid 1px #FFFFFF; background-color:white; padding: 10px;}
+    </style>
+    <apex:form >
+        
+        <div class="center">           
+            <apex:repeat value="{!mapMobLink}" var="MobileLinkComponent">
+                <div class="Content"><apex:outputLabel value="{!MobileLinkComponent['Title__c']}"/></div>
+                <div class="div1">
+                    <apex:repeat value="{!mapMobLink[MobileLinkComponent]}" var="mob">
+                        <div > <a href="{!mob['Link_URL__c'] }" target="_blank"> {!mob['Link_Text__c']} </a></div>
+                    </apex:repeat>
+                </div>        
+            </apex:repeat> 
+        </div>
+    </apex:form>
+</apex:page>

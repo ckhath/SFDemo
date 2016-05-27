@@ -1,0 +1,23 @@
+<apex:page standardStylesheets="false" sidebar="false"
+	showHeader="false" controller="HP_UserDetails">
+	
+	<apex:stylesheet value="{!$Resource.acfCommStyles}" />	
+	<apex:outputPanel rendered="{!headerType=='flethcer'}">
+		<apex:stylesheet value="{!$Resource.commFletcherStyles}" />	
+	</apex:outputPanel>
+
+	<div class="hp_leftCompWrapper">
+	<div class="hp_header">Profile</div>
+	<div class="hp_profileWrapper">
+		<div class="hp_profileImg">
+			<img src="{!userFullPhotoUrl}" class="imageClass" />
+		</div>
+		<div class="hp_profileData">
+			<apex:repeat value="{!HP_UserDetailsFieldList}"
+				var="HP_UserDetailsFieldObj">
+				<div class="hp_profileItem {!IF(HP_UserDetailsFieldObj = 'Name','mainLine', 'subLine')}">{!HP_ContactDetailsobj[HP_UserDetailsFieldObj]}</div>
+			</apex:repeat>
+		</div>
+	</div>
+	</div>
+</apex:page>

@@ -1,0 +1,26 @@
+<apex:page standardStylesheets="true" sidebar="false" showHeader="false" controller="CustomLinkControllerLeftRail2">
+<head>
+        <apex:stylesheet value="{!$Resource.acfCommStyles}" />
+        <base target="_parent" />
+        <style>
+            .hp_profileData {   
+                font-family: "ProximaNovaSoft-Regular", Calibri, "Gill Sans", "Gill Sans MT", Candara, Segoe, "Segoe UI", Arial, sans-serif;
+                font-weight: normal; 
+            }
+        </style>
+</head>
+            
+            <div class="hp_profileData">
+                <apex:repeat value="{!HP_Custom_Link_LeftRail2}" var="HP_Custom_Link_LeftRail2Obj">
+
+<!--                     <a target="_parent" href="{!HP_Custom_Link_LeftRail2Obj.Link_URL__c}">{!HP_Custom_Link_LeftRail2Obj.Link_Text__c}</a> -->
+
+                    <a target="{!HP_Custom_Link_LeftRail2Obj.Link_Behaviour__c}" href="{!HP_Custom_Link_LeftRail2Obj.Link_URL__c}">{!HP_Custom_Link_LeftRail2Obj.Link_Text__c}</a>
+
+                    <br/>
+                </apex:repeat>
+            </div>
+    <!-- End Page Design -->
+
+
+</apex:page>

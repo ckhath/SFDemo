@@ -1,0 +1,224 @@
+<apex:page controller="CommunityAccessRequestController" sidebar="false" showHeader="false">
+   <meta name="viewport" content="width=device-width, initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no"></meta>
+
+
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js" ></script>  
+  <link href="{!URLFOR($Resource.CommunitySpinnerZip, 'Spinner.css')}" rel="stylesheet"/>
+    <style>
+        .btn{
+            color: #333;
+            margin: 1px;
+            padding: 2px 3px;
+            border: 1px solid #7f7f7f !important;
+            border-bottom-color: #7f7f7f;
+            background: #33CCCC !important;
+            font-weight: bold;
+            font-size: .9em;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+        }
+        .CloseButton{
+            margin-top: 20px;
+            padding-left: 53px;
+            padding-right: 53px;
+        }
+        .BackButton {
+            width: 12%;
+            margin-left: 4px;
+        }
+        .SubmitButton{
+            width: 13%;
+        }
+        .inputFieldClass{
+            width:52%;
+        }
+         .inputFieldAddressClass{
+         /*   width:96%; */
+        }
+        .ds_webContent{
+            text-align: justify;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+        .labelColor{
+            margin-left: 20px;
+        }
+        html, body {
+            height: 100%;
+            min-height: 100%;
+            background-color: #B2B2B2;
+        }
+        td.request_label {
+            width: 45%;
+        }
+
+        /* mobile css 
+        .mobile .wrapper { width: 100%; }
+        .mobile .inputFields .row .label { width: 30%; }
+        .mobile .inputFields .row .field { width: 50%; }
+        */
+
+    .form-wrap{
+        background-color: white;
+        width: 50%;
+        margin-top: 0px;
+        padding-top: 0px;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .form-wrap {
+            background-color: white;
+            width: 100% !important; 
+            margin-top: 0px;
+            padding-top: 0px;
+        }
+        td {
+            display:block;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+        input[type="text"], textarea{
+            padding-top: 0;
+            width: 100% !important;
+        }
+        tr{
+            padding-bottom:2%;
+        }
+        .labelColor {
+           margin-left: 0px;
+        }
+        .SubmitButton{
+            width:40%;
+        }
+        .BackButton {
+            width: 40%;
+        }        
+    }
+    
+    
+        
+    </style>
+    <center>
+    <apex:form id="frmAddContact">
+    
+    <script>
+        $( document ).ready(function() {
+            $.getScript("https://www.google.com/recaptcha/api.js");
+            if({!mobile})
+            {
+                console.log('This is CommunityAccessRequest====>> ',{!mobile});
+               // $('body').addClass('mobile');
+              // $('td').css('display','block');
+               //$('.form-wrap').css('width','100%')
+              // $('.labelColor').css('margin-left','0px');
+            }
+        });
+
+        function showLoadingDiv() 
+        {
+            $('.inputFields').html('');
+            $('.ds_webContent').hide();
+            $('.inputFields').append('<div class="spinner medium"></div>');
+        }
+    
+        function hideLoadingDiv() 
+        {
+            $('.inputFields').removeClass("spinnerCenter");
+            $('.ds_webContent').show();   
+        }
+    </script>
+    
+  
+    <div style="background-color: #B2B2B2;"><br/>
+    <div class="form-wrap">
+    <div id="logo_wrapper">
+      <img id="logo" class="logo_salesforce" src="/connect/servlet/servlet.ImageServer?id=015o0000001ZbMV&oid=00Do0000000eYIG" alt="Salesforce" border="0" style="margin-top: 10px;">
+      </img>
+    </div><br/>
+    <!--         <apex:pageMessages /> -->
+        <apex:outputPanel rendered="{!IsInfoWindow}">
+                 <apex:outputText value="{!messageBody}" escape="false"/><br/>
+                <apex:commandButton value="Close" rerender="frmRegister" action="{!clearFields}" styleClass="CloseButton"/>
+        </apex:outputPanel>
+        
+        <apex:actionregion >
+        
+        <apex:outputpanel rendered="{!!IsInfoWindow}">
+            <div style="border: 1px solid #E6E6E6;width: 95%;"><br/>
+                <div class="ds_webContent">
+                 <b><apex:outputText value="{!communityWebContent.Title__c}" escape="false"/></b><br/><br/>
+                    <apex:outputText value="{!communityWebContent.Page_Content__c}" escape="false" />
+                </div><br/><br/>
+                <table style="width: 100%;">
+                    <tr>
+                        <td class="request_label"><label class="labelColor">First Name *</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.FirstName__c}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="request_label"><label class="labelColor">Last Name *</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Last_Name__c}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="request_label"><label class="labelColor">Student First Name</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Former_First_Name__c}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="request_label"><label class="labelColor">Student Last Name</label></td>    
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Former_Last_Name__c}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="request_label"><label class="labelColor">Street Address</label></td>    
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Street_Address__c}" styleClass="inputFieldAddressClass"/></td>
+                    </tr>
+                     <tr>
+                        <td class="request_label"><label class="labelColor">City</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.City__c}" /></td>
+                    </tr>
+                      <tr>
+                        <td class="request_label"><label class="labelColor">State</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.State__c}" /></td>
+                    </tr>
+                     <tr>
+                        <td class="request_label"><label class="labelColor">Postal Code</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Postal_Code__c}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="request_label"><label class="labelColor">Country</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Country__c}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="request_label"><label class="labelColor">Phone</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Phone__c}" /></td>
+                    </tr>
+                   <tr>
+                        <td class="request_label"><label class="labelColor">Current Email *</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Current_Email__c}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="request_label"><label class="labelColor">Former Email</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Former_Email__c}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="request_label"><label class="labelColor">Degree Information (School, Degree, Major, Year)</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Degree__c}" styleClass="inputFieldClass"/></td>
+                    </tr>
+                    <!--<tr>
+                        <td><label class="labelColor">Major</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Major__c}" styleClass="inputFieldClass"/></td>
+                    </tr>
+                    <tr>
+                        <td><label class="labelColor">Class Year</label></td>
+                        <td><apex:inputField value="{!objCommunityAccessRequest.Class_Year__c}" styleClass="inputFieldClass"/></td>
+                    </tr>-->
+                     </table>
+              <apex:commandButton value="Back" action="{!backPage}" immediate="true" styleClass="BackButton"/>
+                <apex:commandButton value="Submit" action="{!saveContact}" styleClass="SubmitButton"/><br/><br/>
+                 </div>
+                </apex:outputpanel><br/>
+        </apex:actionregion>
+       </div><br/>
+       </div>        
+    </apex:form>
+    </center>
+</apex:page>

@@ -1,0 +1,48 @@
+<apex:page showHeader="false" sidebar="false">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!--<script src="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>-->
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <!--<link href="{!URLFOR($Resource.SF1Bootstrap, 'dist/css/bootstrap.css')}" rel="stylesheet" />-->
+    <apex:stylesheet value="{!$Resource.acfCommStyles}" />    
+
+    <style>
+.highlightButton {
+    background-color: #337ab7;
+    color: white;
+}
+.ds_toolpanel{margin: 10px;}
+.ds_inputFields{margin: 0 0 10px;}
+.ds_toolpanel .ds_inputFieldWrapper {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+.ds_results .ds_contact .ds_extras {
+  float: none;
+}
+.ds_results .ds_contact .ds_right {
+display:none;
+}
+  
+.ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+  font-family: ProximaNovaSoft-Regular, Calibri, 'Gill Sans', 'Gill Sans MT', Candara, Segoe, 'Segoe UI', Arial, sans-serif;
+}
+.ui-selectmenu-button span.ui-selectmenu-text{
+    padding:5px 8px;
+}
+.ui-checkbox{
+  display: inline-block;
+  margin: 0 10px 0 0;
+}
+.ui-button, .ui-button:link, .ui-button:visited, .ui-button:hover, .ui-button:active{
+width:100%;
+}
+.ui-loader{display:none;}
+
+</style>
+
+<c:DirectorySearch />   
+</apex:page>

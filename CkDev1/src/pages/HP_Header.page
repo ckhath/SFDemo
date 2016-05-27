@@ -1,0 +1,8 @@
+<apex:page showHeader="false" sidebar="false" controller="HP_Header">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<style>
+		#HP_HeaderImgWrapper { text-align: center; overflow: hidden; }
+		#HP_HeaderImgWrapper img {}
+	</style>
+	<div Id="HP_HeaderImgWrapper"><img id="HP_HeaderImg" alt="" src="{!HP_HeaderObj.Image_URL__c}" /></div>
+</apex:page>

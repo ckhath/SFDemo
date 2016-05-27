@@ -1,0 +1,64 @@
+<apex:page standardController="User" showHeader="false" extensions="MobileCardController" sidebar="false" docType="html-5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/> 
+    
+<link href="/alumni/l/%7B%22mode%22%3A%22PROD%22%2C%22app%22%3A%22one%3Aone%22%2C%22fwuid%22%3A%22-N-TIEGU5yEAT9A1LVEzVw%22%2C%22loaded%22%3A%7B%22APPLICATION%40markup%3A%2F%2Fone%3Aone%22%3A%22KHtC54SOtAdcT4xPcHT2zw%22%7D%2C%22themes%22%3A%5B%22markup%3A%2F%2Fone%3AoneTheme%22%2C%22markup%3A%2F%2Fone%3AformFactorMediumTheme%22%5D%7D/app.css" rel="stylesheet" type="text/css"></link>
+<style>
+  .hpm_Wrapper { background-color: #f0f1f2; }
+  .hpm_Wrapper .clr { }
+  
+  .hpm_Wrapper .linkBtn { border: none; background: #fff;  color: #3c3d3e; text-decoration: none;}
+  .hpm_Wrapper .trSetings { padding: 14px; color: #3c3d3e; font-size: 1rem; background:#fff; margin: 0 0 14px; border-radius: .3125rem; font-family: 'ProximaNovaSoft-Regular',Arial,Helvetica,sans-serif;}
+  .hpm_Wrapper .div1{float:left; }
+  .hpm_Wrapper .div2{float:right; font-size: .8rem;}
+  </style>
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<apex:form >
+		<div class="hpm_Wrapper">
+			<div class="hpm_Content">
+			 <div class="container">
+			     <div class="Content">
+					<apex:repeat value="{!lstMobileCardComponent}" var="MobileCardComponent">
+					<a href="javascript:sforce.one.navigateToURL('{!MobileCardComponent.Link__c}?[[id]]');" class="linkBtn">
+						<div class="trSetings">
+						   <div class="div1"><apex:outputLabel value="{!MobileCardComponent.Title__c}"/></div>
+	                       <div class="div2">{!MobileCardComponent.Label__c}</div>
+	                       <div class="clr">&nbsp;</div>
+	                    
+                     	</div>
+                     </a>
+					</apex:repeat>
+					</div>
+					</div>
+			</div>
+		</div>
+	</apex:form>
+	<script type="text/javascript">
+        function fnRemoveMobileCardMask(sVFpageTitle){
+            var aMasks = top.document.getElementsByClassName('mask');
+        
+            for(var i = 0; i < aMasks.length; i++){
+                if(aMasks[i].title == sVFpageTitle){
+                    aMasks[i].style.display = 'none';
+                    //comm_pre = window.location.toString().match(/\/[a-zA-Z]+\//);
+                    comm_id = window.location.toString().match(/\id=[a-zA-Z0-9]+\&/);
+                  
+                    window.onload = function(){
+                    $('.linkBtn').each(function() {
+  							    var _href = $(this).attr("href"); 
+   							    $(this).attr("href", _href.replace("[[id]]",comm_id) );
+   							    //$(this).attr("href", _href + '?' + comm_id);
+   							//$(this).attr("onClick", 'javascript:sforce.one.navigateToURL('+ _href + '?'+comm_id + ');')
+						});
+                      //abutton = document.getElementsByClassName('linkBtn');
+                      //abutton.append('?id='+comm_id);
+                        //elnew = '<input value="View More" type="button" onclick="javascript:sforce.one.navigateToURL(\''+comm_pre+'apex/'+sVFpageTitle+'?'+comm_id+'\');" />';
+                        //abutton[0].innerHTML = elnew;
+                    }
+        
+                }
+            }
+        }
+        
+        fnRemoveMobileCardMask("MobileCard");
+    </script>
+</apex:page>

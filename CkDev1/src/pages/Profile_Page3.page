@@ -1,0 +1,2212 @@
+<apex:page docType="html-5.0" showHeader="false" sidebar="false"
+    standardController="User" extensions="Profile_Personal_V1"
+    standardStylesheets="false" action="{!QueryPage3}" id="PageID">
+    <!--<apex:outputText value="{!subTabHTML}" escape="false" />-->
+    <apex:stylesheet value="{!$Resource.acfCommStyles}"/>
+     <apex:outputPanel rendered="{!headerType=='flethcer'}">
+        <apex:stylesheet value="{!$Resource.commFletcherStyles}" /> 
+    </apex:outputPanel>
+    <style>
+    .profilePage.userProfilePage .mainContent {
+  /*float: right;
+  width: 77%;
+  margin: 0;*/
+  width: 82% !important;
+}
+.individualPalette.lookupHoverDetail.lookupHoverDetailOverridable {
+    display:none !important;
+}
+   .empty-column-content {
+    display: none;
+}
+.achorTagClass a {
+ /* text-indent: -9999px; */
+  height: 44px;
+  line-height: 0 /* Collapse the original line */
+}
+
+.achorTagClass a::after {
+   content: "Find";
+  text-indent: 0;
+  display: block;
+  padding: 0px 0px 0px 29px;
+ /* line-height: initial;*/
+}
+.relatedAnchorTag a{
+   height: 44px;
+  line-height: 0 
+}
+.relatedAnchorTag1 a{
+    height: 44px;
+    background: #8f4b42;
+    padding-left: 77px;
+    padding-bottom: 11px;
+        line-height: 0;
+}
+.relatedAnchorTag1 a::after{
+ content: "Find";
+  text-indent: 0;
+  display: block;
+  padding: 0px 0px 0px 29px;
+  }
+  
+.relatedAnchorTag a::after{
+ content: "Find";
+  text-indent: 0;
+  display: block;
+  padding: 0px 0px 0px 29px;
+  /*      content: "Find" !important;
+    text-indent: 0;
+    padding: 3px 40px;
+    background: #8f4b42;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px;*/
+}
+.ContentColor{
+    color: black;
+    padding-top: 10px;
+       margin-left: 19px;
+}
+.profile_page_wrapper .colSpan1 {
+    width: 23%;
+ /*   float: left;*/
+}
+
+.profile_page_wrapper .colSpan2 {
+    width: 48%;
+  /*  float: left;*/
+}
+
+.profile_page_wrapper .colSpan3 {
+    width: 73%;
+ /*   float: left;*/
+}
+
+.profile_page_wrapper .colSpan4 {
+    width: 100%;
+  /*  float: left;*/
+}
+.profile_page_margin{
+    margin-left:5%;
+}
+.mobilebackgroundset
+{
+    background: #8a8f92 !important;
+    border: 1px solid #b0b5b9 !important;
+    padding: 10px !important;
+    border-radius: 3px !important;
+    border-width: 1px 1px 8px !important;
+}
+.backgroundColor2Column
+{
+    background: #8a8f92;
+    padding: 10px;
+    border-radius: 3px;
+    margin: 3px 0;
+    min-height: 14px;
+}
+.Edit2Column{
+    background: #fff;
+    padding: 7px 10px;
+    min-height: 20px;
+}
+.errorClass{
+    display:none;
+}
+.buttonClass {
+   padding: 7px 40px;
+    background: #8f4b42;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px; 
+ }
+ .centerContent {
+    width: 100% !important;
+}
+ .profile_page_wrapper .profile_data .profile_fullEdit a, .profile_page_wrapper .profile_data .ps_add{
+  /*padding: 7px 40px;*/
+  padding: 0px 0px 10px 72px;
+  background: #8f4b42;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 3px;
+  content : 'Find';
+}
+  .custPopup{
+            background-color: white;
+            z-index: 9999;
+            left: 50%;
+            padding:10px;
+            position: absolute;
+            width: 750px;
+            margin-left: -380px;
+            top:50px;
+            -webkit-box-shadow: 1px 1px 17px 0px rgba(50, 50, 50, 0.75);
+            -moz-box-shadow:1px 1px 17px 0px rgba(50, 50, 50, 0.75);
+            box-shadow:1px 1px 17px 0px rgba(50, 50, 50, 0.75);
+            border: solid 1px #dododo;
+            border-radius:10px;
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.6;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            min-height: 200%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+        .close-popup{  z-index: 9999;
+          padding: 3px;
+          float: right;
+          position: absolute;
+          top: 3px;
+          right: 7px;}
+</style>
+
+<apex:outputPanel rendered="{!!pageFailed}">
+<apex:form id="frmSubsection">
+<!-- <apex:pageMessages /> -->
+<apex:actionStatus id="theActionStatus" layout="block">
+<apex:facet name="start">
+<div id="assign-action-spinner-main">
+<!-- <div id="assign-action-spinner-content">
+<img src="/img/analytics/reportbuilder/icons/spinner32.gif" alt="Processing..." title="Processing..." /> 
+<p>Processing...</p>
+</div> -->
+</div>
+</apex:facet>
+</apex:actionStatus>
+     <div class="ContentColor"><apex:outputField value="{!communityWebContent.Page_Content__c}" rendered="{!showEditBtn}"/></div>
+    <apex:actionFunction name="setDesktop" action="{!setDesktopMode}" reRender="frmSubsection" Status="theActionStatus" oncomplete="setBackground( '{!showEditBtn}');"/>
+    <apex:actionFunction name="setMobile" action="{!setMobileMode}" reRender="frmSubsection" Status="theActionStatus" />
+    <apex:actionFunction name="checkContactId" action="{!redirectOnBlankPage}" / >
+<!--     <apex:actionFunction name="updateUserRecord" action="{!testMethodNew}" oncomplete="alert('{!relatedFullId}');" rerender="frmSubsection"/> -->
+    <apex:actionFunction name="refreshDiv"
+            reRender="pageBody, editPanel, editPanel2" />
+        <div class="profile_page_wrapper">
+            <apex:outputPanel id="upperButtonPanel">
+                <div class="profile_buttons">
+                    <apex:outPutPanel id="editPanel" rendered="{!showEditBtn}">
+                        <apex:commandButton id="cbEdit" value="Update"
+                            rerender="pageBody, editPanel, editPanel2, lowerButtonPanel,
+                                      upperButtonPanel"
+                            action="{!EditSobjectRecord}" rendered="{!!isEditMode}" immediate="true" onComplete="checkCreateAccess('{!isCreateAccessRelatedCompact}')"/>
+                        <apex:commandButton id="cbSave" value="Save"
+                                rerender="pageBody, editPanel, editPanel2, lowerButtonPanel, upperButtonPanel"
+                                onclick="confirm1();" rendered="{!isEditMode}" />
+                        <apex:commandButton id="cbCancel" value="Cancel"
+                            reRender="EditRender,pageBody, editPanel, editPanel2, lowerButtonPanel,
+                                      upperButtonPanel"
+                            action="{!cancel}" rendered="{!isEditMode}" />
+                    </apex:outPutPanel>
+                </div>
+            </apex:outputPanel>
+
+
+            <apex:outputpanel id="pageBody">
+                <apex:repeat value="{!subSectionCustomSettings}" var="pageSection">
+                    <apex:pageBlock title="">
+                        <div class="profile_section">
+                            <div class="profile_header">
+                                {!pageSection['Title__c']}
+                                <!--<apex:outputPanel rendered="{!!isEditMode &&
+                                pageSection['Privacy_Field_API__c']!=null}">
+                            <div class="profile_private"><apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][pageSection['Privacy_Field_API__c']]}" /> Private</div>
+                        </apex:outputPanel>-->
+                                <apex:outputPanel rendered="{!isEditMode && pageSection['Privacy_Field_API__c']!=null}">
+                                    <div class="profile_private">
+                                        <apex:inputField value="{!currentContact[pageSection['Privacy_Field_API__c']]}" />
+                                        Private
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                            <div class="profile_helpText">{!pageSection['Help_Text__c']}</div>
+                            <div class="profile_data">
+                                <!-- subsection -->
+                                <apex:outputPanel rendered="{!pageSection['Custom_Setting_Type__c']=='subsection'}">
+                                    <!--<apex:repeat value="{!lstSubsectionCustomSetting}" var="subSectionObj">-->
+                                    <apex:pageblockSection >
+<!--                                         <apex:outputfield value="{!mapWebContent['!SUBSECTION_PUBLIC_PROFILE'].Page_Content__c}" label=""/> -->
+                                    </apex:pageblockSection>
+                                    <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                        var="subSectionObj">
+                                        <div class="profile_section">
+                                            <div class="profile_header">
+                                                {!subSectionObj['Title__c']}
+                                                <!--<apex:outputPanel rendered="{!!isEditMode && subSectionObj['Privacy_Field_API__c']!=null}">
+                                            <div class="profile_private"><apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][subSectionObj['Privacy_Field_API__c']]}" /> Private</div>
+                                        </apex:outputPanel>-->
+                                                <apex:outputPanel rendered="{!isEditMode && subSectionObj['Privacy_Field_API__c']!=null}">
+                                                    <div class="profile_private">
+                                                        <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][subSectionObj['Privacy_Field_API__c']]}" />
+                                                        Private
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                            <div class="profile_helpText">{!subSectionObj['Help_Text__c']}</div>
+                                            <div class="profile_data">
+                                                <apex:outputPanel rendered="{!subSectionObj['Custom_Setting_Type__c']=='2 column'}">
+                                                    <apex:outputPanel rendered="{!pageSection['Privacy_Field_API__c']==null || (pageSection['Privacy_Field_API__c']!=null && sectionIdToObjMap[pageSection['Id']][0][pageSection['Privacy_Field_API__c']]==false)}">
+                                                        <apex:outputPanel rendered="{!subSectionObj['Privacy_Field_API__c']==null || (subSectionObj['Privacy_Field_API__c']==null!=null && sectionIdToObjMap[subSectionObj['Id']][0][subSectionObj['Privacy_Field_API__c']]==false)}">
+                                                            <apex:outputPanel rendered="{!!isEditMode}">
+                                                            <apex:outputPanel rendered="{!!isMobileMode}">
+                                                                <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                                    var="objField">
+
+                                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                                        <div class="ps_fields colSpan1">
+                                                                            <div class="ps_label">
+                                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                            </div>
+                                                                            <div class="ps_data">
+                                                                                <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </apex:outputpanel>
+                                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                                        <div class="ps_fields colSpan2">
+                                                                            <div class="ps_label">
+                                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                            </div>
+                                                                            <div class="ps_data">
+                                                                                <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </apex:outputpanel>
+                                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                                        <div class="ps_fields colSpan3">
+                                                                            <div class="ps_label">
+                                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                            </div>
+                                                                            <div class="ps_data">
+                                                                                <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </apex:outputpanel>
+                                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                                        <div class="ps_fields colSpan4">
+                                                                            <div class="ps_label">
+                                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                            </div>
+                                                                            <div class="ps_data">
+                                                                                <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </apex:outputpanel>
+                                                                </apex:repeat>
+                                                                </apex:outputPanel>
+                                                                </apex:outputPanel>
+                                                                <div class="clr">&nbsp;</div>
+                                                                <!--  MOBILE VIEW -->
+                                                                <apex:outputPanel rendered="{!isMobileMode}">
+                                                                <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                                    var="objField">
+
+                                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                                    <div class="ps_fields ps_Mobile">
+                                                                            <div class="ps_label">
+                                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                            </div>
+                                                                            <div class="ps_data">
+                                                                                <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                                            </div>
+                                                                    </div>
+                                                                    </apex:outputpanel>
+                                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                                    <div class="ps_fields ps_Mobile">
+                                                                            <div class="ps_label">
+                                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                            </div>
+                                                                            <div class="ps_data">
+                                                                                <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                                            </div>
+                                                                    </div>
+                                                                    </apex:outputpanel>
+                                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                                    <div class="ps_fields ps_Mobile">
+                                                                            <div class="ps_label">
+                                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                            </div>
+                                                                            <div class="ps_data">
+                                                                                <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                                            </div>
+                                                                    </div>
+                                                                    </apex:outputpanel>
+                                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                                    <div class="ps_fields ps_Mobile">
+                                                                            <div class="ps_label">
+                                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                            </div>
+                                                                            <div class="ps_data">
+                                                                                <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                                            </div>
+                                                                    </div>
+                                                                    </apex:outputpanel>
+                                                                </apex:repeat>
+<!--                                                                 </apex:outputPanel> -->
+                                                            </apex:outputPanel>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    
+                                                    <apex:outputPanel rendered="{!isEditMode}">
+                                                     <apex:outputPanel rendered="{!!isMobileMode}">
+                                                        <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                            var="objField">
+                                                            <apex:outputPanel rendered="{!!objField.Read_Only__c}">
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                                     <div class="ps_fields colSpan1">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data ps_edit">
+                                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                            </apex:outputPanel> 
+                                                                        </div>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                                     <div class="ps_fields colSpan2">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data ps_edit">
+                                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                                      <div class="ps_fields colSpan3">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data ps_edit">
+                                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                                  <div class="ps_fields colSpan4">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data ps_edit">
+                                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!objField.Read_Only__c}">
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                                       <div class="ps_fields colSpan1">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data">
+                                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                                  <div class="ps_fields colSpan2">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data">
+                                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                                   <div class="ps_fields colSpan3">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data">
+                                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                                  <div class="ps_fields colSpan4">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data">
+                                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                            </apex:outputPanel>
+                                                        </apex:repeat>
+                                                        </apex:outputPanel>
+                                                        
+                                                        <!--  MOBILE VIEW -->
+                                                        <apex:outputpanel rendered="{!isMobileMode}">
+                                                        <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                            var="objField">
+                                                            <apex:outputPanel rendered="{!!objField.Read_Only__c}">
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =='1' || objField.Column_Span__c==''}">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data ps_edit">
+                                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                            </apex:outputPanel> 
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =='2'}">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data ps_edit">
+                                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =='3'}">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data ps_edit">
+                                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =='4'}">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data ps_edit">
+                                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!objField.Read_Only__c}">
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data">
+                                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data">
+                                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data">
+                                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                        </div>
+                                                                        <div class="ps_data">
+                                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                                        </div>
+                                                                        <div class="ps_private">
+                                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private
+                                                                                </apex:outputPanel>
+                                                                        </div>
+                                                                </apex:outputpanel>
+                                                            </apex:outputPanel>
+                                                        </apex:repeat>
+                                                        </apex:outputpanel>
+                                                        </apex:outputPanel>
+                                                </apex:outputPanel>
+
+                                                   <!-- preferences -->
+                                <apex:outputPanel rendered="{!subSectionObj['Custom_Setting_Type__c']=='preferences'}">
+                                    <apex:pageblockSection >
+<!--                                         <apex:outputfield value="{!mapWebContent['Two Column public Profile'].Page_Content__c}" /> -->
+                                    </apex:pageblockSection>
+                                    <apex:outputPanel rendered="{!subSectionObj['Privacy_Field_API__c']==null || (subSectionObj['Privacy_Field_API__c']!=null && sectionIdToObjMap[subSectionObj['Id']][0][subSectionObj['Privacy_Field_API__c']]==false)}">
+                                        <apex:outputPanel rendered="{!!isEditMode}">
+
+                                            <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                var="objField">
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                    <div class="ps_fieldsPref colSpan1">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                    <div class="ps_fieldsPref colSpan2">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                    <div class="ps_fieldsPref colSpan3">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                    <div class="ps_fieldsPref colSpan4">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}"
+                                                                rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+
+                                            </apex:repeat>
+
+                                            <div class="clr">&nbsp;</div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!isEditMode}">
+                                        <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                            var="objField">
+                                            <apex:outputPanel rendered="{!!objField.Read_Only__c}">
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                    <div class="ps_fieldsPref colSpan1">
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                    <div class="ps_fieldsPref colSpan2">
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                    <div class="ps_fieldsPref colSpan3">
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                    <div class="ps_fieldsPref colSpan4">
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!objField.Read_Only__c}">
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                    <div class="ps_fieldsPref colSpan1">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                    <div class="ps_fieldsPref colSpan2">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                    <div class="ps_fieldsPref colSpan3">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                    <div class="ps_fieldsPref colSpan4">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[subSectionObj['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                            </apex:outputPanel>
+                                        </apex:repeat>
+                                        <div class="clr">&nbsp;</div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+
+                                                <!-- related list compact -->
+                                                <apex:outputPanel rendered="{!subSectionObj['Custom_Setting_Type__c']=='related list compact'}">
+                                                    related list compact
+                                                    <apex:pageblockSection >
+<!--                                                         <apex:outputfield value="{!mapWebContent['Related List Compact Public Profile'].Page_Content__c}" label=""/> -->
+                                                    </apex:pageblockSection>
+                                                    <apex:outputPanel rendered="{!!isEditMode}">
+                                                        <apex:outputPanel rendered="{!subSectionObj['Privacy_Field_API__c']==null || (subSectionObj['Privacy_Field_API__c']!=null && currentContact[pageSection['Privacy_Field_API__c']]==false)}">
+                                                            <apex:pageBlockTable value="{!sectionIdToObjMap[subSectionObj['Id']]}"
+                                                                var="pbtObj">
+                                                                <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                                    var="objField">
+                                                                    <apex:column value="{!pbtObj[objField.Field_API_Name__c]}">
+                                                                        <apex:facet name="header">{!objField.Field_Name__c}</apex:facet>
+
+                                                                    </apex:column>
+                                                                </apex:repeat>
+                                                            </apex:pageBlockTable>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!isEditMode}">
+                                                        <apex:pageBlockTable value="{!sectionIdToObjMap[subSectionObj['Id']]}"
+                                                            var="pbtObj">
+                                                            <apex:column >
+                                                                <apex:commandLink value="Delete"
+                                                                    action="{!deleteRelatedList}"
+                                                                    rendered="{!subSectionObj['Related_List_Read_Only_API__c']==null || (subSectionObj['Related_List_Read_Only_API__c']!=null && pbtObj[subSectionObj['Related_List_Read_Only_API__c']]==false)}">
+                                                                    <apex:param name="realtedListObjId"
+                                                                        value="{!pbtObj['Id']}" assignTo="{!realtedListObjId}" />
+                                                                </apex:commandLink>
+                                                                <apex:facet name="footer">
+                                                                    <apex:commandLink value="Add"
+                                                                        action="{!saveSobjectRecordToList}"
+                                                                        styleClass="ps_add">
+                                                                        <apex:param name="pageSectionId"
+                                                                            value="{!subSectionObj['Id']}"
+                                                                            assignTo="{!pageSectionId}" />
+                                                                    </apex:commandLink>
+                                                                </apex:facet>
+                                                            </apex:column>
+                                                            
+                                                            <apex:column value="{!pbtObj[subSectionObj['Related_List_Privacy_API__c']]}"
+                                                                rendered="{!subSectionObj['Related_List_Privacy_API__c']!=null}">
+                                                                <apex:facet name="header">Private</apex:facet>
+                                                                <apex:facet name="footer">
+                                                                    <apex:inputField value="{!sectionIdToRelatedListObjectMap[subSectionObj['Id']][subSectionObj['Related_List_Privacy_API__c']]}" />
+                                                                </apex:facet>
+                                                            </apex:column>
+                                                            <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                                var="objField">
+                                                                <apex:column value="{!pbtObj[objField.Field_API_Name__c]}">
+                                                                    <apex:facet name="header">{!objField.Field_Name__c}</apex:facet>
+                                                                    <apex:facet name="footer">
+                                                                        <apex:inputField required="false" value="{!sectionIdToRelatedListObjectMap[subSectionObj['Id']][objField.Field_API_Name__c]}" />
+                                                                    </apex:facet>
+                                                                </apex:column>
+                                                            </apex:repeat>
+                                                        </apex:pageBlockTable>
+                                                    </apex:outputPanel>
+                                                </apex:outputPanel>
+
+                                                <!-- related list full -->
+                                                <apex:outputPanel rendered="{!subSectionObj['Custom_Setting_Type__c']=='related list full'}">
+                                                    <apex:pageblockSection >
+<!--                                                         <apex:outputfield value="{!mapWebContent['Related list Full Public Profile'].Page_Content__c}" label=""/> -->
+                                                    </apex:pageblockSection>
+                                                    <apex:outputPanel rendered="{!!isEditMode}">
+                                                        <apex:outputPanel rendered="{!pageSection['Privacy_Field_API__c']==null || (pageSection['Privacy_Field_API__c']!=null && currentContact[pageSection['Privacy_Field_API__c']]==false)}">
+                                                            <apex:pageBlockTable value="{!sectionIdToObjMap[subSectionObj['Id']]}"
+                                                                var="pbtObj">
+                                                                <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                                    var="objField">
+                                                                    <apex:column value="{!pbtObj[objField.Field_API_Name__c]}"
+                                                                        rendered="{!objField.Read_Mode__c==true}">
+                                                                        <apex:facet name="header">{!objField.Field_Name__c}</apex:facet>
+                                                                    </apex:column>
+                                                                </apex:repeat>
+                                                            </apex:pageBlockTable>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!isEditMode}">
+                                                        <!--<apex:variable var="obj3" value="{!sectionIdToObjMap[pageSection['Id']][0]}" />-->
+                                                        <apex:pageBlockTable value="{!sectionIdToObjMap[subSectionObj['Id']]}"
+                                                            var="pbtObj">
+                                                            <apex:column >
+                                                                <apex:commandLink value="Delete"
+                                                                    action="{!deleteRelatedList}"
+                                                                    rendered="{!subSectionObj['Related_List_Read_Only_API__c']==null || (subSectionObj['Related_List_Read_Only_API__c']!=null && pbtObj[subSectionObj['Related_List_Read_Only_API__c']]==false)}">
+                                                                    <apex:param name="realtedListObjId"
+                                                                        value="{!pbtObj['Id']}" assignTo="{!realtedListObjId}" />
+                                                                </apex:commandLink>
+                                                            </apex:column>
+                                                            <apex:column value="{!pbtObj[subSectionObj['Related_List_Privacy_API__c']]}"
+                                                                rendered="{!subSectionObj['Related_List_Privacy_API__c']!=null}">
+                                                                <apex:facet name="header">Private</apex:facet>
+                                                            </apex:column>
+                                                            <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                                var="objField">
+                                                                <apex:column value="{!pbtObj[objField.Field_API_Name__c]}"
+                                                                    rendered="{!objField.Read_Mode__c==true}">
+                                                                    <apex:facet name="header">{!objField.Field_Name__c}</apex:facet>
+                                                                </apex:column>
+                                                            </apex:repeat>
+                                                        </apex:pageBlockTable>
+                                                        <div class="profile_fullEdit">
+                                                            <div class="ps_addNew">Add New</div>
+                                                            <apex:outputPanel >
+                                                                <apex:outputPanel rendered="{!subSectionObj['Related_List_Privacy_API__c']!=null}">
+                                                                    <div class="ps_fields">
+                                                                        <div class="ps_label">
+                                                                            <apex:outputLabel value="Private" />
+                                                                        </div>
+                                                                        <div class="ps_data ps_edit">
+                                                                            <apex:inputField value="{!sectionIdToRelatedListObjectMap[subSectionObj['Id']][subSectionObj['Related_List_Privacy_API__c']]}" />
+                                                                        </div>
+                                                                    </div>
+                                                                </apex:outputPanel>
+                                                                <apex:repeat value="{!sectionIdToFieldsMap[subSectionObj['Id']]}"
+                                                                    var="objField">
+                                                                    <apex:outputPanel rendered="{!objField.Edit_Mode__c==true}">
+                                                                        <div class="ps_fields">
+                                                                            <div class="ps_label">
+                                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                            </div>
+                                                                            <div class="ps_data ps_edit">
+                                                                                <apex:inputField required="false" value="{!sectionIdToRelatedListObjectMap[subSectionObj['Id']][objField.Field_API_Name__c]}" styleClass="tobeCheckd achorTagClass classPopup"/>
+                                                                                <!--<apex:inputfield value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Privacy_Field_API__c]}" label="" rendered="{!objField.Privacy_Field_API__c!=null}"/>-->
+                                                                            </div>
+                                                                        </div>
+                                                                    </apex:outputPanel>
+                                                                </apex:repeat>
+                                                                <div class="clr">&nbsp;</div>
+                                                            </apex:outputPanel>
+                                                            <apex:commandLink value="Add"
+                                                                action="{!saveSobjectRecordToList}">
+                                                                <apex:param name="pageSectionId"
+                                                                    value="{!subSectionObj['Id']}"
+                                                                    assignTo="{!pageSectionId}" />
+                                                            </apex:commandLink>
+                                                        </div>
+                                                        <!--<apex:commandLink value="Create" action="{!saveSobjectRecordToListFull}" reRender="pageBody">
+                                                         <apex:param name="pageSectionId" value="{'TEST'}" />
+                                                    </apex:commandLink>-->
+                                                    </apex:outputPanel>
+                                                </apex:outputPanel>
+
+                                            </div>
+                                        </div>
+                                    </apex:repeat>
+                                </apex:outputPanel>
+
+                                <!-- 2 column -->
+                                <apex:outputPanel rendered="{!pageSection['Custom_Setting_Type__c']=='2 column'}">
+                                   
+                                    <apex:pageblockSection >
+<!--                                         <apex:outputfield value="{!mapWebContent['Two Column public Profile'].Page_Content__c}" label="" /> -->
+                                    </apex:pageblockSection>
+                                    
+                                  <apex:outputPanel rendered="{!pageSection['Privacy_Field_API__c']==null || (pageSection['Privacy_Field_API__c']!=null && sectionIdToObjMap[pageSection['Id']][0][pageSection['Privacy_Field_API__c']]==false)}">
+                                        <apex:outputPanel rendered="{!!isEditMode}">
+                                            <apex:outputPanel rendered="{!!isMobileMode}">
+                                                <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}" var="objField">
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                        <div class="ps_fields colSpan1">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="ps_data">
+                                                                <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"
+                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                        <div class="ps_fields colSpan2">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="ps_data">
+                                                                <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"
+                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                        <div class="ps_fields colSpan3">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="ps_data">
+                                                                <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"
+                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputpanel>
+                                                    
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                        <div class="ps_fields colSpan4">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="ps_data">
+                                                                <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"
+                                                                    rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputpanel>
+                                                </apex:repeat>
+                                            </apex:outputPanel>
+                                            <div class="clr">&nbsp;</div>
+                                            <!--- Mobile View-->
+                                            <apex:outputPanel rendered="{!isMobileMode}">
+                                                <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                                    var="objField">
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                             <div>
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <apex:outputpanel rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}">
+                                                                <div class="backgroundColor2Column">
+                                                                    <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"/>
+                                                                </div>
+                                                            </apex:outputpanel>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                            <div >
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <apex:outputpanel rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}">
+                                                            <div class="backgroundColor2Column">
+                                                                <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"/>
+                                                            </div>
+                                                            </apex:outputpanel>
+                                                    </apex:outputpanel>
+                                                    
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <apex:outputpanel rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}">
+                                                                <div  class="backgroundColor2Column">
+                                                                    <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"/>
+                                                                </div>
+                                                            </apex:outputpanel>
+                                                    </apex:outputpanel>
+                                                    
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                            <div>
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <apex:outputpanel rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}">
+                                                                <div  class="backgroundColor2Column">
+                                                                    <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"/>
+                                                                </div>
+                                                            </apex:outputpanel>
+                                                    </apex:outputpanel>
+                                                </apex:repeat>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    
+                                    <apex:outputPanel rendered="{!isEditMode}">
+                                    <apex:outputPanel rendered="{!!isMobileMode}">
+                                        <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                            var="objField">
+                                            <apex:outputPanel rendered="{!!objField.Read_Only__c}">
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                    <div class="ps_fields colSpan1">
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField html-autocomplete="off" value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield html-autocomplete="off" value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                    <div class="ps_fields colSpan2">
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField html-autocomplete="off" value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield html-autocomplete="off" value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                    <div class="ps_fields colSpan3">
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField html-autocomplete="off" value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield html-autocomplete="off" value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                    <div class="ps_fields colSpan4">
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField html-autocomplete="off" value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield html-autocomplete="off" value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!objField.Read_Only__c}">
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c=='' || objField.Column_Span__c =="1"}">
+                                                    <div class="ps_fields colSpan1">
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                    <div class="ps_fields colSpan2">
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                    <div class="ps_fields colSpan3">
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                    <div class="ps_fields colSpan4">
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                            </apex:outputPanel>
+                                        </apex:repeat>
+                                        </apex:outputPanel>
+                                        <div class="clr">&nbsp;</div>
+                                        <!--- Mobile View-->
+                                        <apex:outputpanel rendered="{!isMobileMode}">
+                                            <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                                var="objField">
+                                                <apex:outputPanel rendered="{!!objField.Read_Only__c}">
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                            <div>
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="Edit2Column">
+                                                                <apex:inputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                            </div>
+                                                            <div class="ps_private">
+                                                                <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                    <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                            </div>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="Edit2Column">
+                                                                <apex:inputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                            </div>
+                                                            <div class="ps_private">
+                                                                <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                    <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                            </div>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="Edit2Column">
+                                                                <apex:inputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                            </div>
+                                                            <div class="ps_private">
+                                                                <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                    <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                            </div>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="Edit2Column">
+                                                                <apex:inputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                            </div>
+                                                            <div class="ps_private">
+                                                                <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                    <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                            </div>
+                                                    </apex:outputpanel>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!objField.Read_Only__c}">
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="backgroundColor2Column">
+                                                                <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                            </div>
+                                                            <div class="ps_private">
+                                                                <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                    <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                            </div>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="backgroundColor2Column">
+                                                                <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                            </div>
+                                                            <div class="ps_private">
+                                                                <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                    <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                            </div>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="backgroundColor2Column">
+                                                                <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                            </div>
+                                                            <div class="ps_private">
+                                                                <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                    <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                            </div>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                            <div class="ps_label">
+                                                                <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                            </div>
+                                                            <div class="backgroundColor2Column">
+                                                                <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                            </div>
+                                                            <div class="ps_private">
+                                                                <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                    <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                            </div>
+                                                    </apex:outputpanel>
+                                                </apex:outputPanel>
+                                            </apex:repeat>
+                                        </apex:outputpanel>
+                                        
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+
+                                <!-- preferences -->
+                                <apex:outputPanel rendered="{!pageSection['Custom_Setting_Type__c']=='preferences'}">
+                                    <apex:pageblockSection >
+<!--                                         <apex:outputfield value="{!mapWebContent['Two Column public Profile'].Page_Content__c}" /> -->
+                                    </apex:pageblockSection>
+                                    <apex:outputPanel rendered="{!pageSection['Privacy_Field_API__c']==null || (pageSection['Privacy_Field_API__c']!=null && sectionIdToObjMap[pageSection['Id']][0][pageSection['Privacy_Field_API__c']]==false)}">
+                                        <apex:outputPanel rendered="{!!isEditMode}">
+
+                                            <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                                var="objField">
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                    <div class="ps_fieldsPref colSpan1">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"
+                                                                rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                    <div class="ps_fieldsPref colSpan2">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"
+                                                                rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                    <div class="ps_fieldsPref colSpan3">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"
+                                                                rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                    <div class="ps_fieldsPref colSpan4">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}"
+                                                                rendered="{!objField.Privacy_Field_API__c==null || (objField.Privacy_Field_API__c!=null && sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]==false)}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+
+                                            </apex:repeat>
+
+                                            <div class="clr">&nbsp;</div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!isEditMode}">
+                                        <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                            var="objField">
+                                            <apex:outputPanel rendered="{!!objField.Read_Only__c}">
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                    <div class="ps_fieldsPref colSpan1">
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                    <div class="ps_fieldsPref colSpan2">
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                    <div class="ps_fieldsPref colSpan3">
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                    <div class="ps_fieldsPref colSpan4">
+                                                        <div class="ps_data ps_edit">
+                                                            <apex:inputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!objField.Read_Only__c}">
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="1" || objField.Column_Span__c==''}">
+                                                    <div class="ps_fieldsPref colSpan1">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                    <div class="ps_fieldsPref colSpan2">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                    <div class="ps_fieldsPref colSpan3">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                    <div class="ps_fieldsPref colSpan4">
+                                                        <div class="ps_data">
+                                                            <apex:outputField value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Field_API_Name__c]}" />
+                                                        </div>
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                        </div>
+                                                        <div class="ps_private">
+                                                            <apex:outputPanel rendered="{!objField.Privacy_Field_API__c!=null}">
+                                                                <apex:inputfield value="{!sectionIdToObjMap[pageSection['Id']][0][objField.Privacy_Field_API__c]}" /> Private</apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                            </apex:outputPanel>
+                                        </apex:repeat>
+                                        <div class="clr">&nbsp;</div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                                
+                            <!-- related list compact -->
+                                <apex:outputPanel rendered="{!pageSection['Custom_Setting_Type__c']=='related list compact'}">
+                                   <apex:pageblockSection >
+<!--                                         <apex:outputfield value="{!mapWebContent['Related List Compact Public Profile'].Page_Content__c}" label=""/> -->
+                                    </apex:pageblockSection>
+                                    <!-- Output fields-->
+                                    <apex:outputPanel rendered="{!!isEditMode}">
+                                        <!--- Desktop view -->
+                                      
+                                      <apex:outputPanel rendered="{!pageSection['Privacy_Field_API__c']==null ||
+                                                                    (pageSection['Privacy_Field_API__c']!=null  &&
+                                                                    currentContact[pageSection['Privacy_Field_API__c']]==false)}" id="theDesktopPanel">
+                                            <apex:pageBlockTable value="{!sectionIdToObjMap[pageSection['Id']]}" var="pbtObj">
+                                                <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                                    var="objField">      
+                                                    <apex:outputText value="{!objField}"/>
+                                                    <apex:column value="{!pbtObj[objField.Field_API_Name__c]}"
+                                                        rendered="{!objField.Read_Mode__c==true}">
+                                                        <apex:facet name="header">{!objField.Field_Name__c}</apex:facet>
+                                                    </apex:column>
+                                                </apex:repeat>
+                                                <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                                    var="objField">
+                                                    
+                                                    <apex:repeat value="{!lstWrapper}" var="objWrapper">
+                                                        <apex:outputpanel rendered="{!If(objWrapper.FieldApiName == objField.Field_Name__c,true,false)}">
+                                                        <apex:selectlist value="{!objWrapper.SelectedValue}"
+                                                            rendered="{!If(objWrapper.FieldApiName == objField.Field_Name__c,true,false)}">
+                                                            <apex:selectOptions value="{!objWrapper.lstSelectOption}" />
+                                                        </apex:selectlist>
+                                                         </apex:outputpanel>
+                                                    </apex:repeat>
+                                                </apex:repeat>
+                                            </apex:pageBlockTable>  
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+
+                                       <apex:outputPanel id="compEditModeId" rendered="{!isEditMode}">                                    
+                                                <apex:pageBlockTable id="pbtable1" value="{!sectionIdToObjMap[pageSection['Id']]}" var="pbtObj">
+                                                      <apex:column rendered="{!pageSection['Edit__c'] || pageSection['Delete__c'] 
+                                                                                                    ||  pageSection['Create__c']}">
+                                                <span class="profile_page_margin">
+                                                <apex:commandLink value="Edit"
+                                                                  action="{!editRelatedListCompact}" 
+                                                                  rendered="{!pbtObj['Id'] != relatedListCompEditId && pageSection['Edit__c'] && mapEditableFields[pbtObj['Id']] == false}" immediate="true">
+                                                     <apex:param name="relatedListCompEditId"
+                                                            value="{!pbtObj['Id']}" assignTo="{!relatedListCompEditId}" />
+                                                </apex:commandLink>
+                                                </span>
+                                                
+                                                <span class="profile_page_margin">
+                                                <apex:commandLink value="Delete"
+                                                    action="{!deleteRelatedList}"
+                                                    rendered="{!pageSection['Delete__c'] && mapEditableFields[pbtObj['Id']] == false }" immediate="true">
+                                                    <apex:param name="realtedListObjId" value="{!pbtObj['Id']}"
+                                                        assignTo="{!realtedListObjId}" />
+                                                </apex:commandLink>
+                                                </span>
+                                                
+<!--                                                 <span class="profile_page_margin"> -->
+<!--                                                     <apex:commandLink value="Update" rerender="frmSubsection" action="{!UpdateRelatedFullRecord}" rendered="{!mapEditableFields[pbtObj['Id']]}"> -->
+<!--                                                         <apex:param name="relFullId" value="{!pbtObj['Id']}" assignTo="{!relatedFullId}" /> -->
+<!--                                                     </apex:commandLink> -->
+<!--                                                 </span> -->
+                                                
+                                               
+                                                 <apex:facet name="footer">
+<!--                                                       <button class="buttonClass" type="button"  onclick="validateIsBlankCompact1(this, '{!pageSection['Id']}')">Add</button> -->
+                                                <apex:outputpanel >
+                                                         <apex:commandButton value="Add" onclick="validateIsBlankCompact1(this, '{!pageSection['Id']}')" status="theActionStatus" 
+                                                            rendered="{!isDisplayAdd}" styleClass="buttonClass updateBtnRelatedFull" style="width: 113px;height: 32px;" reRender="frmSubsection"/>
+<!--                                                          <apex:commandButton value="Update" onclick="validateIsBlankFullUpdateCompact('{!pbtObj.id}')"  oncomplete="alert('{!pbtObj.id}');" status="theActionStatus" styleClass="buttonClass" rendered="{!!isDisplayAdd}" style="width: 113px;height: 32px;"/> -->
+                                                              <apex:commandButton value="Update" onclick="validateIsBlankFullUpdateCompact()" status="theActionStatus" styleClass="buttonClass updateBtnRelatedFull" rendered="{!!isDisplayAdd}" style="width: 113px;height: 32px;" reRender="frmSubsection"/>
+                                                </apex:outputpanel>
+                                                </apex:facet> 
+                                            </apex:column>
+                                            
+                                          
+                                            
+                                            <!-- Related List Compact Privacy checkbox functionality -->
+                                            <apex:column rendered="{!pageSection['Related_List_Privacy_API__c']!=null}">
+                                                <apex:outputField value="{!pbtObj[pageSection['Related_List_Privacy_API__c']]}"/>
+                                                    <apex:facet name="footer">
+                                                    <apex:outputPanel >
+                                                        <apex:inputField value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][pageSection['Related_List_Privacy_API__c']]}" rendered="{!isDisplayAdd}"/>
+                                                        <apex:inputField value="{!objStudent[pageSection['Related_List_Privacy_API__c']]}" rendered="{!!isDisplayAdd}"/>
+                                                    </apex:outputPanel>
+                                                    </apex:facet>
+                                                    <apex:facet name="header">Private</apex:facet>
+                                            </apex:column>
+                                            <!-- End -->
+                                               
+<!--                                              <apex:repeat value="{!sectionIdToObjMap[pageSection['Id']]}" var="pbtObj"> -->
+                                            <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                                var="objField" >
+                                                <apex:column > 
+<!--                                                    <apex:inputField required="false" value="{!pbtObj[objField.Field_API_Name__c]}" rendered="{!mapEditableFields[pbtObj['Id']]}"/> -->
+<!--                                                          <apex:inputField required="false" value="{!pbtObj[objField.Field_API_Name__c]}"  -->
+<!--                                                                 rendered="{!pbtObj['Id'] == realtedListEditObjId && !isDisplayAdd}" styleClass="tobeCheckd"/> -->
+                                                
+                                                <apex:outputField value="{!pbtObj[objField.Field_API_Name__c]}"/> 
+                                                    <apex:facet name="header">{!objField.Field_Name__c}</apex:facet>
+                                                        <apex:facet name="footer">
+                                                             <apex:outputpanel styleClass="optAddPanel">
+                                                                <div class="relatedAnchorTag1">
+                                                                
+    <!--                                                                     {!pbtObj[objField.Field_API_Name__c]}--   {!objField.Field_API_Name__c} -- {!pbtObj} -->
+                                                                           <apex:inputField required="false" value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Field_API_Name__c]}" 
+                                                                             rendered="{!isDisplayAdd}"
+                                                                             styleClass="tobeCheckd achorTagClass classPopup" />
+                                                                            
+    <!--                                                                                    <apex:inputField required="false" value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Field_API_Name__c]}"  -->
+    <!--                                                                                    rendered="{!pageSection['Create__c'] && pageSection['Read_Only__c']==false && !isDisplayAdd}" styleClass="tobeCheckd"/> -->
+    <!--                                                                                    <apex:inputText value="{!pbtObj[realtedListEditObjId]}"/> -->
+                                                                            
+                                                                            <apex:inputField value="{!objStudent[objField.Field_API_Name__c]}" rendered="{!!isDisplayAdd}" styleClass="tobeCheckd achorTagClass classPopup"/>
+    <!--                                                                                    <apex:outputLabel value="{!pbtObj[objField.Field_API_Name__c]}"  rendered="{!pbtObj['Id'] == realtedListEditObjId && !isDisplayAdd}" /> -->
+    <!--                                                                                      <apex:inputField required="false" value="{!pbtObj[objField.Field_API_Name__c]}" rendered="{!pbtObj['Id'] == realtedListEditObjId && !isDisplayAdd}"  -->
+    <!--                                                                                      styleClass="tobeCheckd"/> -->
+                                                                         </div>
+                                                              </apex:outputpanel>     
+                                                             </apex:facet>
+                                                     </apex:column>
+<!--                                                      <apex:column > -->
+<!--                                                      <apex:facet name="footer"> -->
+<!--                                                          <apex:inputText value="{!objStudent[objField.Field_API_Name__c]}" rendered="{!!isDisplayAdd}" styleClass="tobeCheckd"/> -->
+<!--                                                      </apex:facet> -->
+<!--                                                      </apex:column> -->
+                                            </apex:repeat>
+                                        </apex:pageBlockTable>
+                                         <apex:outputpanel id="name-error" styleClass="errorClass" style="color: #8f4b42;">At least one field must have a value</apex:outputpanel>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        
+                                <!-- related list full -->
+                                <apex:outputPanel id="optRelatedFull" rendered="{!pageSection['Custom_Setting_Type__c']=='related list full'}">
+                                    <apex:pageblockSection >
+<!--                                         <apex:outputfield value="{!mapWebContent['Related list Full Public Profile'].Page_Content__c}" label=""/> -->
+                                    </apex:pageblockSection>
+                                     <!-- Output fields-->
+                                    <apex:outputPanel rendered="{!!isEditMode}">
+                                        <apex:outputPanel rendered="{!pageSection['Privacy_Field_API__c']==null ||
+                                                                    (pageSection['Privacy_Field_API__c']!=null &&
+                                                                    currentContact[pageSection['Privacy_Field_API__c']]==false)}">
+                                            <apex:pageBlockTable value="{!sectionIdToObjMap[pageSection['Id']]}" var="pbtObj">
+                                                <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                                    var="objField">
+
+                                                    <apex:column value="{!pbtObj[objField.Field_API_Name__c]}"
+                                                        rendered="{!objField.Read_Mode__c==true}">
+                                                        <apex:facet name="header">{!objField.Field_Name__c}</apex:facet>
+                                                    </apex:column>
+                                                </apex:repeat>
+                                                <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                                    var="objField">
+                                                    <apex:repeat value="{!lstWrapper}" var="objWrapper">
+                                                       {!objField.Field_Name__c}
+                                                       <apex:outputpanel rendered="{!If(objWrapper.FieldApiName == objField.Field_Name__c,true,false)}">
+                                                        <apex:selectlist value="{!objWrapper.SelectedValue}"
+                                                            rendered="{!If(objWrapper.FieldApiName == objField.Field_Name__c,true,false)}">
+                                                            <apex:selectOptions value="{!objWrapper.lstSelectOption}" />
+                                                        </apex:selectlist>
+                                                      </apex:outputpanel>
+                                                    </apex:repeat>
+                                                </apex:repeat>
+                                            </apex:pageBlockTable>
+                                        </apex:outputPanel>
+                                        </apex:outputPanel>
+                                    <!-- Input fields-->
+<!--                                     <apex:actionFunction action="{!editRelatedList}" name="editRelatedList" rerender="showUpdatePanel"/> -->
+                                    <apex:outputPanel rendered="{!isEditMode}">
+                                    
+                                        <!--<apex:variable var="obj3" value="{!sectionIdToObjMap[pageSection['Id']][0]}" />-->
+                                        <apex:pageBlockTable id="pbtable" value="{!sectionIdToObjMap[pageSection['Id']]}" var="pbtObj">
+                                       
+                                        
+                                        
+                                            <apex:column rendered="{!pageSection['Edit__c'] || pageSection['Delete__c']}">
+                                                <span class="profile_page_margin">
+                                                <apex:commandLink value="Edit" id="EditRender"
+                                                             action="{!InvokeShow}" immediate="true" rendered="{!pbtObj['Id'] != realtedListEditObjId && 
+                                                                                                                                                pageSection['Edit__c'] && mapEditableFields[pbtObj['Id']] == false }">
+                                                     <apex:param name="realtedListEditObjId"
+                                                            value="{!pbtObj['Id']}" assignTo="{!realtedListEditObjId}" />
+                                                </apex:commandLink>
+
+                                                </span>
+                                                <span class="profile_page_margin"> 
+                                                    <apex:commandLink value="Delete" action="{!deleteRelatedList}" immediate="true" rendered="{!pbtObj['Id'] != realtedListEditObjId && 
+                                                                                                                                                pageSection['Delete__c'] && mapEditableFields[pbtObj['Id']] == false }">
+<!--                                                         rendered="{!pageSection['Delete__c'] && mapEditableFields[pbtObj['Id']] == false }" immediate="true"> -->
+    <!--                                                     rendered="{!(pageSection['Read_Only__c']==false) && (pageSection['Related_List_Read_Only_API__c']==null || (pageSection['Related_List_Read_Only_API__c']!=null && pbtObj[pageSection['Related_List_Read_Only_API__c']]==false))}"> -->
+                                                        <apex:param name="realtedListObjId" value="{!pbtObj['Id']}"
+                                                            assignTo="{!realtedListObjId}" />
+                                                    </apex:commandLink>
+                                                    </span>
+<!--                                                     <span class="profile_page_margin"> -->
+<!--                                                     <apex:commandLink value="Update" rerender="frmSubsection" action="{!UpdateRelatedFullRecord}" -->
+<!--                                                          rendered="{!mapEditableFields[pbtObj['Id']]}"> -->
+<!--                                                     <apex:param name="relFullId" value="{!pbtObj['Id']}" -->
+<!--                                                             assignTo="{!relatedFullId}" /> -->
+<!--                                                     </apex:commandLink> -->
+<!--                                                 </span> -->
+                                            </apex:column>
+                                          
+                                            <apex:column value="{!pbtObj[pageSection['Related_List_Privacy_API__c']]}"
+                                               rendered="{!pageSection['Related_List_Privacy_API__c']!=null}">
+                                               
+                                                <apex:facet name="header">Private</apex:facet>
+                                            </apex:column>
+                                            
+                                            <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}"
+                                                var="objField">
+                                                <apex:column rendered="{!objField.Read_Mode__c==true}" >
+<!--                                                     <apex:inputField value="{!pbtObj[objField.Field_API_Name__c]}" rendered="{!mapEditableFields[pbtObj['Id']]}"/> -->
+                                                    <apex:outputField value="{!pbtObj[objField.Field_API_Name__c]}" />
+                                                    <apex:facet name="header">{!objField.Field_Name__c}</apex:facet>
+                                                </apex:column>
+                                            </apex:repeat>
+                                        </apex:pageBlockTable>
+                                         
+                                        <!--update  layout -->
+                                        <apex:outputPanel id="showPanel" rendered="{!show}">
+                                          <div class="profile_fullEdit">
+                                                <div class="ps_addNew">Update New</div>
+<!--                                                <apex:variable value="{!sectionIdToObjMap[pageSection['Id']]}" var="pbtObj1"> -->
+
+                                          <!-- Related List Full Privacy Functionality -->
+                                               <apex:outputPanel rendered="{!pageSection['Related_List_Privacy_API__c']!=null}">
+                                                    <div class="ps_fields">
+                                                        <div class="ps_label">
+                                                            <apex:outputLabel value="Private" />
+                                                        </div>
+                                                        <apex:repeat value="{!sectionIdToObjMap[pageSection['Id']]}" var="pbtObj">                                                       
+                                                            <apex:outputPanel rendered="{!pbtObj['Id'] == realtedListEditObjId}">
+                                                                <div class="ps_data ps_edit">
+                                                                    <apex:inputField value="{!pbtObj[pageSection['Related_List_Privacy_API__c']]}"/>
+                                                                </div>
+                                                            </apex:outputPanel>
+                                                        </apex:repeat>
+                                                   </div>
+                                                </apex:outputPanel>
+                                          <!-- End -->
+                                                    <apex:repeat value="{!sectionIdToObjMap[pageSection['Id']]}" var="pbtObj">
+                                                        <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}" var="objField" rendered="{!pbtObj['Id'] == realtedListEditObjId}">
+                                                             <apex:outputPanel rendered="{!objField.Edit_Mode__c==true}">
+                                                             <apex:outputpanel rendered="{!objField.Column_Span__c =='' || objField.Column_Span__c =="1" }">
+                                                                 <div class="ps_fields colSpan1">
+                                                                    <div class="ps_label">
+                                                                        <apex:outputlabel >{!objField.Field_Name__c}</apex:outputlabel>
+                                                                    </div>
+                                                                    <div class="ps_data ps_edit">
+                                                                          <div class="relatedAnchorTag">
+                                                                                      <apex:inputField required="false" value="{!pbtObj[objField.Field_API_Name__c]}" rendered="{!pbtObj['Id'] == realtedListEditObjId}" styleClass="achorTagClass classPopup"/>
+                                                                           </div>
+                                                                    </div>
+                                                                </div>
+                                                                </apex:outputpanel>
+                                                                <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                                 <div class="ps_fields colSpan2">
+                                                                    <div class="ps_label">
+                                                                        <apex:outputlabel >{!objField.Field_Name__c}</apex:outputlabel>
+                                                                    </div>
+                                                                    <div class="ps_data ps_edit">
+                                                                          <div class="relatedAnchorTag">
+                                                                                      <apex:inputField required="false" value="{!pbtObj[objField.Field_API_Name__c]}" rendered="{!pbtObj['Id'] == realtedListEditObjId}" styleClass="achorTagClass classPopup"/>
+                                                                           </div>
+                                                                    </div>
+                                                                </div>
+                                                                </apex:outputpanel>
+                                                                   <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                                 <div class="ps_fields colSpan3">
+                                                                    <div class="ps_label">
+                                                                        <apex:outputlabel >{!objField.Field_Name__c}</apex:outputlabel>
+                                                                    </div>
+                                                                    <div class="ps_data ps_edit">
+                                                                          <div class="relatedAnchorTag">
+                                                                                      <apex:inputField required="false" value="{!pbtObj[objField.Field_API_Name__c]}" rendered="{!pbtObj['Id'] == realtedListEditObjId}" styleClass="achorTagClass classPopup"/>
+                                                                           </div>
+                                                                    </div>
+                                                                </div>
+                                                                </apex:outputpanel>
+                                                                   <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                                 <div class="ps_fields colSpan4">
+                                                                    <div class="ps_label">
+                                                                         <apex:outputlabel >{!objField.Field_Name__c}</apex:outputlabel>
+                                                                    </div>
+                                                                    <div class="ps_data ps_edit">
+                                                                          <div class="relatedAnchorTag">
+                                                                                      <apex:inputField required="false" value="{!pbtObj[objField.Field_API_Name__c]}" rendered="{!pbtObj['Id'] == realtedListEditObjId}" styleClass="achorTagClass classPopup"/>
+                                                                           </div>
+                                                                    </div>
+                                                                </div>
+                                                                </apex:outputpanel>
+                                                            </apex:outputPanel>
+                                                        </apex:repeat>
+<!--                                                         <div class="clr"></div> -->
+<!--                                                         <br/><br/> -->
+<!--                                                                   <apex:outputpanel styleClass="errorClass" style="color: #8f4b42;">At least one field must have a value</apex:outputpanel><br/><br/> -->
+<!--                                                                   <apex:commandButton value="Update" styleClass="buttonClass updateBtnRelatedFull" onclick="validateIsBlankFullUpdate('{!pbtObj.id}') " reRender="frmSubsection" rendered="{!pbtObj['Id']== realtedListEditObjId}" style="display:block;margin-top: 5%;"/> -->
+                                                                   <apex:commandButton value="Update" styleClass="buttonClass updateBtnRelatedFull" onclick="validateIsBlankFullUpdate() " rendered="{!pbtObj['Id']== realtedListEditObjId}" style="display:block;margin-top: 5%;" reRender="frmSubsection"/>
+                                                            <!--<apex:commandButton value="Update" rerender="frmSubsection,showPanel" action="{!UpdateRelatedFullRecord}" styleClass="buttonClass"  rendered="{!pbtObj['Id']== realtedListEditObjId}">
+                                                                <apex:param name="relFullId" value="{!pbtObj.id}" assignTo="{!relatedFullId}" />
+                                                            </apex:commandButton>-->
+                                                    </apex:repeat>
+                                        
+                                             <!--     <apex:commandButton value="Update" rerender="frmSubsection" action="{!UpdateRelatedFullRecord}" styleClass="buttonClass" rendered="{!pbtObj['Id'] == realtedListEditObjId}">
+                                                         <apex:param name="relFullId" value="{!pbtObj1['Id']}"  -->
+<!--                                                              assignTo="{!relatedFullId}" /> 
+                                                </apex:commandButton>-->
+<!--                                                </apex:variable> -->
+                                            </div>
+                                        </apex:outputPanel>
+                                         
+<!--                                             <apex:outputPanel rendered="{!hide}"> -->
+                                                 <apex:outputPanel rendered="{!!show}">
+                                                    <apex:outputPanel rendered="{!pageSection['Read_Only__c']==false && pageSection['Create__c']==true}" >
+                                                        <div class="profile_fullEdit">
+                                                                <div class="ps_addNew">Add New</div>
+<!--                                                                 <apex:outputPanel rendered="{!pageSection['Related_List_Privacy_API__c']!=null}"> -->
+                                                                     <apex:outputPanel rendered="{!pageSection['Related_List_Privacy_API__c']!=null}">
+                                                                     <div class="ps_fields">
+                                                                             <div class="ps_label">
+                                                                                         <apex:outputLabel value="Private" />
+                                                                              </div>
+                                                                              
+                                                                            <div class="ps_data ps_edit">
+                                                                                    <apex:inputField value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][pageSection['Related_List_Privacy_API__c']]}"/>
+                                                                            </div>
+                                                                    </div>
+                                                                </apex:outputPanel>
+                                                                
+                                                                <apex:repeat value="{!sectionIdToFieldsMap[pageSection['Id']]}" var="objField">
+                                                                    <apex:outputPanel rendered="{!objField.Edit_Mode__c==true}">
+                                                                    <apex:outputpanel rendered="{!objField.Column_Span__c =='' || objField.Column_Span__c =="1"}">
+                                                                        <div class="ps_fields colSpan1">
+                                                                                <div class="ps_label">
+                                                                                    <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                                </div>
+                                                                                <div class="ps_data ps_edit">
+                                                                                        <div class="achorTagClass">
+                                                                                            <apex:inputField required="false" value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Field_API_Name__c]}" styleClass="tobeCheckd1 classPopup"/>
+                                                                                            <!--<apex:inputfield value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Privacy_Field_API__c]}" label="" rendered="{!objField.Privacy_Field_API__c!=null}"/>-->
+                                                                                         </div>
+                                                                                 </div>
+                                                                        </div>
+                                                                        </apex:outputpanel>
+                                                                        <apex:outputpanel rendered="{!objField.Column_Span__c =="2"}">
+                                                                        <div class="ps_fields colSpan2">
+                                                                                <div class="ps_label">
+                                                                                    <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                                </div>
+                                                                                <div class="ps_data ps_edit">
+                                                                                        <div class="achorTagClass">
+                                                                                            <apex:inputField required="false" value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Field_API_Name__c]}" styleClass="tobeCheckd1 classPopup"/>
+                                                                                            <!--<apex:inputfield value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Privacy_Field_API__c]}" label="" rendered="{!objField.Privacy_Field_API__c!=null}"/>-->
+                                                                                         </div>
+                                                                                 </div>
+                                                                        </div>
+                                                                        </apex:outputpanel>
+                                                                        <apex:outputpanel rendered="{!objField.Column_Span__c =="3"}">
+                                                                        <div class="ps_fields colSpan3">
+                                                                                <div class="ps_label">
+                                                                                    <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                                </div>
+                                                                                <div class="ps_data ps_edit">
+                                                                                        <div class="achorTagClass">
+                                                                                            <apex:inputField required="false" value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Field_API_Name__c]}" styleClass="tobeCheckd1 classPopup"/>
+                                                                                            <!--<apex:inputfield value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Privacy_Field_API__c]}" label="" rendered="{!objField.Privacy_Field_API__c!=null}"/>-->
+                                                                                         </div>
+                                                                                 </div>
+                                                                        </div>
+                                                                        </apex:outputpanel>
+                                                                        <apex:outputpanel rendered="{!objField.Column_Span__c =="4"}">
+                                                                        <div class="ps_fields colSpan4">
+                                                                                <div class="ps_label">
+                                                                                    <apex:outputLabel value="{!objField.Field_Name__c}" />
+                                                                                </div>
+                                                                                <div class="ps_data ps_edit">
+                                                                                        <div class="achorTagClass">
+                                                                                            <apex:inputField required="false" value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Field_API_Name__c]}" styleClass="tobeCheckd1 classPopup" />
+                                                                                            <!--<apex:inputfield value="{!sectionIdToRelatedListObjectMap[pageSection['Id']][objField.Privacy_Field_API__c]}" label="" rendered="{!objField.Privacy_Field_API__c!=null}"/>-->
+                                                                                         </div>
+                                                                                 </div>
+                                                                        </div>
+                                                                        </apex:outputpanel>
+                                                                    </apex:outputPanel>
+                                                                </apex:repeat>
+                              
+                                                                <div class="clr">&nbsp;</div>
+                                                                  <apex:outputpanel styleClass="errorClass" style="color: #8f4b42;">At least one field must have a value</apex:outputpanel><br/><br/>
+                                                                  <button  style="display: block;" class="buttonClass" type="button"  onclick="validateIsBlankFull1(this, '{!pageSection['Id']}')">Add</button>
+                                                             </div>
+                                                             
+                                                    </apex:outputPanel>
+                                        </apex:outputPanel>
+                                   </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                    </apex:pageBlock>
+                </apex:repeat>
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="lowerButtonPanel" >
+                    <div class="profile_buttons" style="margin-top: 14px;">
+                        <apex:outPutPanel id="editPanel1" rendered="{!showEditBtn}">
+                            <apex:commandButton id="cbEdit1" value="Update"
+                                rerender="pageBody, editPanel, editPanel2, lowerButtonPanel, upperButtonPanel"
+                                action="{!EditSobjectRecord}" rendered="{!!isEditMode}" immediate="true" onComplete="checkCreateAccess('{!isCreateAccessRelatedCompact}')"/>
+                            <apex:commandButton id="cbSave1" value="Save"
+                                rerender="pageBody, editPanel, editPanel2, lowerButtonPanel, upperButtonPanel"
+                                onclick="confirm1();" rendered="{!isEditMode}" />
+                            <apex:commandButton id="cbCancel1" value="Cancel"
+                                reRender="pageBody, editPanel, editPanel2, lowerButtonPanel, upperButtonPanel"
+                                action="{!cancel}" rendered="{!isEditMode }"/>
+                        </apex:outPutPanel>
+                    </div>
+                </apex:outputPanel>
+        </div>
+ <apex:actionFunction action="{!saveSobjectRecordToList}" name="saveSobjectRecordToList" reRender="frmSubsection" > 
+       <apex:param name="pageSectionId" value="" assignTo="{!pageSectionId}" />  
+<!--                                 value="{!pageSection['Id']} -->
+ </apex:actionFunction> 
+ 
+ <!-- <outputpanel id="test" / >
+ <apex:actionFunction action="{!UpdateRelatedFullRecord}" name="test1" reRender="test" >
+ <apex:param name="relFullId" value="" assignTo="{!relatedFullId}" />
+ </apex:actionFunction>  
+  -->
+
+<apex:outputpanel id="optPanel">
+    
+</apex:outputpanel>
+<!-- <apex:actionFunction action="{!UpdateRelatedFullRecord}" name="test" reRender="optPanel"> </apex:actionFunction> -->
+
+<apex:actionFunction action="{!UpdateRelatedFullRecord}" name="UpdateRelatedFullRecord" reRender="frmSubsection"> 
+<!--     <apex:param name="relFullId" value="" assignTo="{!relatedFullId}" /> -->
+</apex:actionFunction>
+ 
+<apex:actionFunction action="{!UpdateRelatedCompactRecord}" name="UpdateRelatedCompactRecord"> 
+<!--        <apex:param name="realtedListEditObjId" value="" assignTo="{!realtedListEditObjId}" /> -->
+</apex:actionFunction>
+
+<apex:actionFunction name="saveSobjectRecord" action="{!saveSobjectRecord}"/>
+<apex:actionFunction name="methodOneInJavascript" rerender="tstpopup"/>
+
+        <div id="tstpopup">
+        <div id="div1" class="popupBackground" style="display:none;"/>
+            <div id="div2" class="custPopup" style="display:none;">
+           <b>You have an unsaved update and if you continue you will lose your update.</b>
+                <div class="close-popup">
+                    <apex:commandButton value="Ok" action="{!saveSobjectRecord}" status="theActionStatus" styleClass="buttonClass"/>
+                     <apex:commandButton value="Cancel" onclick="return hidepoup()" status="theActionStatus" styleClass="buttonClass"/>
+                 </div>
+            </div>
+        </div>
+
+                                                           
+ </apex:form>
+    </apex:outputPanel>
+    <script src="https://code.jquery.com/jquery-2.1.4.js" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+   function setBackground(hideBackground) {
+    //alert('hideBackground'+hideBackground);
+        if(hideBackground == 'false') {
+                $(".profile_buttons").css("background", "none");
+                 $(".profile_buttons").css("padding", "0px");
+                   $(".profile_page_wrapper").css("font-size", "13px");
+                   $(".ContentColor").css("padding-top", "0px");
+        }
+    }
+
+     function hidepoup() {
+      $(".popupBackground").css("display", "none");
+      $(".custPopup").css("display", "none");
+      return false;
+         
+     }
+    /*function validateIsBlankCompactUpdate(el, param_compact)
+    {
+        var isEmpty = 0;
+        $(el).parent().parent().parent().children().children(':text, select').each(function( index, element ) 
+        { 
+            if($(element).val()=='')
+            {
+                isEmpty++;
+            } 
+        });
+
+        if(isEmpty == $(el).parent().parent().parent().children().children(':text, select').length)
+        {
+            alert('At least one field must have a value!');
+        }
+        else
+        {
+            UpdateRelatedFullRecord(param_compact);
+        }
+
+    }*/
+
+    function validateIsBlankCompact1(el, param_compact)
+    {
+        var isEmpty = 0;
+        //$(el).parent().parent().children().children(':text, select').each(function( index, element ) 
+        $(el).parent().parent().parent().find(':text, select').each(function( index, element )
+        { 
+            if($(element).val()=='')
+            {
+                isEmpty++;
+            } 
+        });
+
+        if(isEmpty == $(el).parent().parent().parent().find(':text, select').length)
+        {
+            alert('At least one field must have a value!');
+        }
+        else
+        {
+            saveSobjectRecordToList(param_compact);
+        }
+    }
+
+    var isCancel = true;
+    function confirm1() {
+        var isValuePresent = 'false';
+        $(".classPopup").each(function(){
+            var fieldType = $(this).attr('type');
+            if( fieldType =='text'){
+                if($(this).val() != ''){
+                    isValuePresent = 'true';
+                }
+            }
+            else if(fieldType =='checkbox'){
+                if( $(this).prop('checked')!= false){
+                    isValuePresent = 'true';
+                }
+                
+            }
+            else if(fieldType =='select'){
+                if( $(this).val()!= '' || $(this).val()!='none'){
+                    isValuePresent = 'true';
+                }
+            }
+        });
+            
+            
+        //if(showValue == 'true' || showUpdate == 'true') {
+        if(isValuePresent == 'true'){
+            $("#div1").css("display","block");
+            $("#div2").css("display","block");
+            var returnValue = methodOneInJavascript();
+            
+            return returnValue; 
+        } else {
+        saveSobjectRecord();
+        }
+    }
+
+    function validateIsBlankFullUpdate()
+    {
+       
+       checkCliked = 1;
+        var isEmpty = 0;
+        //$('.updateBtnRelatedFull').parent().children().children().children('.ps_data').children().children(':text, select').each(function( index, element ) 
+        $('.updateBtnRelatedFull').parent().children().children().children('.ps_fields').children('.ps_data').children().children(':text, select').each(function( index, element )
+        { 
+            if($(element).val()=='')
+            {
+                isEmpty++;
+            } 
+        });
+
+        if(isEmpty == $('.updateBtnRelatedFull').parent().children().children().children('.ps_fields').children('.ps_data').children().children(':text, select').length)
+        {
+            alert('At least one field must have a value!');
+        }
+        else
+        {
+            UpdateRelatedFullRecord();
+        }
+    }
+    
+    function validateIsBlankFullUpdateCompact()
+    {
+        
+        var isEmpty = 0;
+        //$(el).parent().parent().children().children(':text, select').each(function( index, element ) 
+        $('.updateBtnRelatedFull').parent().parent().parent().children().children().children().children(':text, select').each(function( index, element )
+        { 
+            if($(element).val()=='')
+            {
+                isEmpty++;
+            } 
+        });
+
+        if(isEmpty == $('.updateBtnRelatedFull').parent().parent().parent().children().children().children().children(':text, select').length)
+        {
+            alert('At least one field must have a value!');
+        }
+        else
+        {
+            UpdateRelatedCompactRecord();
+        }
+        //UpdateRelatedCompactRecord();
+    }
+
+    function validateIsBlankFull1(el, param_compact)
+    {
+        var isEmpty = 0;
+        //$(el).parent().children().children().children('.ps_data').children().children(':text, select').each(function( index, element ) 
+        $(el).parent().find(':text, select').each(function( index, element )
+        { 
+            if($(element).val()=='')
+            {
+                isEmpty++;
+            } 
+        });
+
+        if(isEmpty == $(el).parent().find(':text, select').length)
+        {
+            alert('At least one field must have a value!');
+        }
+        else
+        {
+            saveSobjectRecordToList(param_compact);
+        }
+    }
+
+function checkCreateAccess(isCreateAccessRelatedComact){
+    
+        if(isCreateAccessRelatedComact =='false'){
+            $("tfoot").hide();
+        }
+        else{
+            $("tfoot").show();
+        }
+    
+}
+    /*function validateIsBlankCompact(param_compact) 
+    {
+    var textFields = $('.tobeCheckd').find('input[type=text]');
+     var isEmpty = 0;
+     for(i = 0; i < textFields['prevObject'].length ; i++){
+         var inputField = textFields['prevObject'][i];
+         if(String(inputField.value) == '' && (String(inputField.type) =='text')){
+                 isEmpty++;
+         }
+     }
+       if(isEmpty == textFields['prevObject'].length - 1){
+                $(".error").removeClass("error");
+            }
+       else{
+                saveSobjectRecordToList(param_compact);
+       }
+    }*/
+
+     /*function validateIsBlankFull(param_full) {
+     var elements = $(".tobeCheckd1");
+     var emptyCount = 0;
+     for(i =0 ;i < elements.length; i++){
+        if(elements[i].value == ''){
+         emptyCount++;
+        }
+     }
+         if (emptyCount == elements.length) {
+              $(".error").removeClass("error");
+        }
+        else {
+            saveSobjectRecordToList(param_full);
+        }
+    }*/
+    
+         $(document).ready(function() {
+          //Sophak Added for Mobile resposive.   
+        if (navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i) != null) {
+      //     alert("mobile insertface");
+           setMobile();
+          //  mobile = true;
+        } else {
+      var showEditBackground = '{!showEditBtn}';
+          if(showEditBackground == 'false')
+          {
+               $(".profile_buttons").css("background", "none");
+          }
+
+          setDesktop();
+          //  mobile = false;
+        }
+       
+        
+        //checkContactId();
+        //console.log('checkContactId***');
+        //var contactId = '{!currentUserContactId}';
+        //if(contactId == null){
+           // location.href='/apex/BlankPage';
+        //}
+    });
+//     function updateContactRecord(relatedListId){
+//         alert(relatedListId);
+//         updateUserRecord(relatedListId);
+//         alert("After..");
+//         //return false;
+//     }
+
+    function fnRemoveMobileCardMask(sVFpageTitle) {
+        var aMasks = top.document.getElementsByClassName('mask');
+
+        for ( var i = 0; i < aMasks.length; i++) {
+            if (aMasks[i].title == sVFpageTitle) {
+                aMasks[i].style.display = 'none';
+                comm_pre = window.location.toString()
+                        .match(/\/[a-zA-Z]+\//);
+                comm_id = window.location.toString().match(
+                        /\id=[a-zA-Z0-9]+\&/);
+                window.onload = function() {
+                    abutton = document
+                            .getElementsByClassName('profile_buttons');
+                    elnew = '<input value="View More" type="button" onclick="javascript:sforce.one.navigateToURL(\''
+                            + comm_pre
+                            + 'apex/'
+                            + sVFpageTitle
+                            + '?'
+                            + comm_id + '\');" />';
+                    abutton[0].innerHTML = elnew;
+                }
+
+            }
+        }
+    }
+
+       fnRemoveMobileCardMask("Profile_Page3");
+       
+       
+   </script>
+</apex:page>

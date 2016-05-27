@@ -1,0 +1,43 @@
+<apex:page >
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+    <head>
+        <title>Pobox HTTP API 2.000</title>
+    </head>
+    <body>
+        <div align="center">
+            <h1>Pobox HTTP API 2.000</h1>
+        </div>
+        <div align="center">
+Failed to authenticate.
+
+            <form method="post" action="/bydomain/" enctype="multipart/form-data">
+                <div align="center">
+                    <table cellpadding="10" border="10">
+                        <tr>
+                            <th>Alias:</th>
+                            <td>
+                                <input type="text" name="alias" size="40" /></td>
+                            </tr>
+                            <tr>
+                                <th>Forward:</th>
+                                <td>
+                                    <input type="text" name="forward" size="40" /></td>
+                                </tr>
+                                <tr>
+                                    <th>Password:</th>
+                                    <td>
+                                        <input type="password" name="password" size="40" /></td>
+                                    </tr>
+                                </table>
+                                <input type="submit" name="action" value="add" />
+                                <input type="submit" name="action" value="change" />
+                                <input type="submit" name="action" value="delete" />
+                                <input type="submit" name="action" value="view" />
+                            </div>
+                        </form>
+                    </div>
+                </body>
+            </html>
+
+</apex:page>

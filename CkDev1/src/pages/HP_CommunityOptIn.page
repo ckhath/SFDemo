@@ -1,0 +1,96 @@
+<apex:page showHeader="false" sidebar="false" controller="HP_CommunityOptIn">
+    <head>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />    
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    
+    <script>
+    var domainUrl_Mobile = '/' + '{!profileDomain}' + '/one/one.app';
+    var domainUrl_Home = '/' + '{!profileDomain}' + '/home/home.jsp';
+        $(document).ready(function() {
+            initMobile();
+        });
+
+        function redirectCheck()
+        {
+            if({!currentUser.Community_Terms_Opt_In__c}==true)
+            {
+                //redirectPage();
+                agreeBtnAction();
+            }
+        }
+
+        function initMobile() {
+                //Sophak Added for Mobile resposive.    
+           /*     if (navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i) != null){
+                //if (navigator.userAgent.match(/Chrome/i) != null) {
+                    mobile = true;
+                    var fileref = document.createElement('script')
+                    fileref.setAttribute("type", "text/javascript")
+                    fileref
+                            .setAttribute("src",
+                                    "https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js")
+                    document.getElementsByTagName("head")[0]
+                            .appendChild(fileref);
+                } else {
+                    mobile = false;
+                    $('body').addClass('pc');
+                }
+                console.log("****mobile" + mobile);
+                populateMobile(mobile); */
+                populateMobile();
+            }
+
+        /*function redirectPage()
+        {
+         console.log('****domainUrl_Mobile' + '{!pageUrl}');
+        domainUrl_Home = '{!pageUrl}';
+        console.log('****domainUrl_Mobile' + domainUrl_Mobile);
+            if(mobile)
+            {
+                window.location.href = domainUrl_Mobile;
+            }
+            else
+            {
+                window.location.href = domainUrl_Home;
+            }
+        }*/
+    </script>
+
+
+    <style>
+        #OptIn_Logo { text-align: center; }
+        #OptIn_Wrapper { margin: 50px auto; }
+        #OptIn_Title { text-align: center; margin: 20px; font-size: 16px; font-weight: bold; }  
+        #OptIn_linkDiv, #OptIn_Body { margin: 20px 50px; }
+        #OptIn_Body {}
+        .OptIn_link { text-align: center; border: solid 1px; padding: 10px 0; width: 100%; display: inline-block; font-size: 14px; }
+    </style>
+    </head><body>
+    <apex:form id="theForm" >
+<!--     <apex:commandbutton action="{!redirectToNextPage}" value="Redirect"/> -->
+        <apex:actionFunction name="agreeBtnAction" action="{!agreeBtnAction}" rerender="theForm"/>
+        <apex:actionFunction name="populateMobile" action="{!populateMobile}" rerender="theForm" oncomplete="redirectCheck()">
+            <apex:param name="p1" value="" assignTo="{!mobile}" />
+        </apex:actionFunction>
+<!--         <apex:outputPanel rendered="{!currentUser.Community_Terms_Opt_In__c==false}"> -->
+            <!--<apex:pageblock >
+                <apex:pageblockSection >
+                    <apex:outputfield value="{!communityWebContent.Page_Content__c}" />
+                </apex:pageblockSection>
+            </apex:pageblock>-->
+            
+            <apex:outputPanel rendered="{!isAgreeLink}" >
+            <div id="OptIn_Wrapper" >
+                <div id="OptIn_Logo"><img src="{!HP_CommunityOptInObj.Logo_URL__c}" alt="Logo" /></div>
+                <div id="OptIn_Title">{!HP_CommunityOptInObj.Title__c}</div>
+                <div id="OptIn_Body"><apex:outputText value="{!body}" escape="false" /></div>
+                <div id="OptIn_linkDiv">
+<!--                 <apex:commandLink styleClass="OptIn_link" value="I Agree" action="{!agreeBtnAction}" onComplete="redirectPage()" rerender="theForm"/></div> -->
+<apex:commandLink styleClass="OptIn_link" value="I Agree" action="{!agreeBtnAction}" rerender="theForm"  /></div>
+                <!--<apex:commandButton action="{!agreeBtnAction}" value="I Agree" />-->
+            </div>
+        </apex:outputPanel>
+    </apex:form>
+    </body>
+</apex:page>

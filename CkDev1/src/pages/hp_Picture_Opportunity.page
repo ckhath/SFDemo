@@ -1,0 +1,22 @@
+<apex:page standardStylesheets="false" sidebar="false" showHeader="false" controller="PictureOpportunityController">
+	<head>
+		<apex:stylesheet value="{!$Resource.acfCommStyles}" />
+		<base target="_parent" />
+	</head>
+
+	<!-- Page Design -->
+	<div class="hp_rightCompWrapper">
+<!-- 		<div class="hp_header">Opportunity</div> -->
+		<div>
+			<apex:repeat value="{!HP_OppObjList}" var="HP_VolunteerOppObj">
+
+				<a href="{!HP_VolunteerOppObj.Image_Link__c}" target="_blank"><img alt=""
+					class="ImageWrapper" src="{!HP_VolunteerOppObj.Image_Url__c}" /></a>
+
+			</apex:repeat>
+		</div>
+	</div>
+	<!-- End Page Design -->
+
+
+</apex:page>

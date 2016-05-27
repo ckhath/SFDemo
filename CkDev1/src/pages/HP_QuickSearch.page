@@ -1,0 +1,44 @@
+<apex:page standardStylesheets="false" sidebar="false" showHeader="false" controller="HP_QuickSearchController">
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+        function QS_CreateURL (passedUrl) 
+        {
+            url = passedUrl;
+            $(".QS_Field").children().each(function () {
+                url = url + $(this).attr("id") + "=";
+                url = url + $(this).val() + "&";
+             });
+             return encodeURI(url);
+        }
+        function QS_runSearch()
+        {
+            var url_Value = '{!profileDomain}' + '/apex/DirectorySearch?';
+            console.log('***' + url_Value );
+            URL = QS_CreateURL(url_Value );
+            top.window.location.href=URL; 
+        }
+        function enterRunSearch(e){  
+           if (e.keyCode == 13) {
+               QS_runSearch();
+           }
+        }
+    </script>
+    <apex:stylesheet value="{!$Resource.acfCommStyles}" />
+    <apex:outputPanel rendered="{!headerType=='flethcer'}">
+        <apex:stylesheet value="{!$Resource.commFletcherStyles}" /> 
+    </apex:outputPanel>
+    <div class="hp_centerCompWrapper">
+        <div class="hp_header">Quick Search</div>
+        <div class="hp_centerCompWrapperInner" onkeypress="enterRunSearch(event);">
+            <div class="QS_FieldWrapper">
+                <div class="QS_Field"><input id="rel.contact.fname" type="text" name="fname" placeholder="First Name" /></div>
+            </div>
+            <div class="QS_FieldWrapper">
+                <div class="QS_Field"><input id="rel.contact.lname" type="text" name="lname" placeholder="Last Name" /></div>
+            </div>
+            <div class="QS_FieldWrapper" style="margin-top: 6px;">
+                <input type="button" value="Search" onClick="QS_runSearch()" />
+            </div>
+        </div>
+    </div>
+</apex:page>

@@ -1,0 +1,18 @@
+<apex:page showHeader="false" sidebar="false">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>
+	$( document ).ready(function() {
+  		
+		$("iframe", window.parent.document).each(
+     		function(index, elem) 
+     		{
+     			if($(elem).attr('name')==window.name)
+     			{
+     				$(".outer", window.parent.document).before($(elem).prev());
+     				$(elem).hide();
+     			}
+     		}
+     	);
+	});
+	</script>
+</apex:page>

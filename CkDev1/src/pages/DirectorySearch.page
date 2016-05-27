@@ -1,0 +1,60 @@
+<apex:page showHeader="true" sidebar="false" controller="DirectorySearch">
+<!--tabStyle="Directory_Search__tab"-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
+    <!--<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css">-->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!--<script src="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>-->
+    <apex:stylesheet value="{!$Resource.acfCommStyles}" />
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<!--     <link -->
+<!--         href="{!URLFOR($Resource.acfComm__SF1Bootstrap, 'dist/css/bootstrap.css')}" -->
+<!--         rel="stylesheet" /> -->
+       <!--<apex:includeScript value="{!URLFOR($Resource.SF1Bootstrap, 'dist/js/bootstrap.min.js')}" />-->
+
+
+    <style>
+.JqueryAccordian{
+    
+}
+.ds_Picklist {
+    width : 150 px !important;
+}
+.ds_selectlist{
+
+    width:104%;
+}
+/* .pc .ds_inputFields .ds_SectionHeader{ */
+
+/* background: none !important; */
+/* padding: 0px 0px !important; */
+/* margin: 0px !important; */
+/* } */
+/* .pc .ds_inputFields .ds_SectionHeader{margin: 0px 0px 10px !important; */
+/*     display: block!important; */
+/*     cursor: pointer!important; */
+/*     position: relative!important; */
+/*     margin: 2px 0px 0px!important; */
+/*     padding: 0.5em 0.5em 0.5em 0.7em!important; */
+/*     min-height: 0px!important; */
+/*     font-size: 100%!important; */
+
+
+/* } */
+/* .ui-accordion .ui-accordion-icons { */
+/*     padding-left: 3.2em !important; */
+/* } */
+/*  .pc .ds_inputFields .ds_SectionHeader{ */
+/*      background: none repeat scroll 0% 0% #CCC; */
+/*   padding: 5px 10px; */
+/*   margin: 0px 0px 10px; */
+/*  } */
+</style>
+
+<div class="pc">
+<div class="ds_webContent"><apex:outputText value="{!communityWebContent.Page_Content__c}" escape="false"/></div>
+<c:DirectorySearch />
+</div>
+
+</apex:page>

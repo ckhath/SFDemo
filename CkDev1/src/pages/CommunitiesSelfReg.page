@@ -1,0 +1,50 @@
+<apex:page id="communitiesSelfRegPage" showHeader="true" controller="CommunitiesSelfRegController" title="{!$Label.site.user_registration}">
+     <apex:define name="body">  
+      <center>
+<apex:form id="theForm" forceSSL="true">
+<style>
+    #assign-action-spinner-main {position: fixed;left: 0;top: 0;background-color:rgba(0,0,0,.6);height: 100%;width: 100%;z-index: 999;align: center;vertical-align: middle;}
+    #assign-action-spinner-content {position: absolute; top: 50%;left: 50%;z-index: 1000;background-color: #F5FCFF;width: 204;height: 94; border-radius: 1em;border: 1px solid #CEECFF;padding: 20px 40px 20px 40px;margin-left: -116px;margin-top: -36px;}
+    #assign-action-spinner-content img {width: 32;height: 32;align: center;vertical-align: middle;}
+    #assign-action-spinner-content p {display: inline;font-size: 135%;font-weight: bold;}
+</style>
+ 
+          
+                    <apex:pageMessages id="error"/>
+                    <apex:panelGrid columns="2" style="margin-top:1em;" id="theGrid">
+                      <apex:outputLabel value="First Name" for="firstName"/>
+                      <apex:inputText required="true" id="firstName" value="{!firstName}" label="First Name"/>
+                      <apex:outputLabel value="Last Name" for="lastName"/>
+                      <apex:inputText required="true" id="lastName" value="{!lastName}" label="Last Name"/>
+                      <apex:outputLabel value="{!$Label.site.community_nickname}" for="communityNickname"/>
+                      <apex:inputText required="true" id="communityNickname" value="{!communityNickname}" label="{!$Label.site.community_nickname}"/>
+                      <apex:outputLabel value="{!$Label.site.email}" for="email"/>
+                      <apex:inputText required="true" id="email" value="{!email}" label="{!$Label.site.email}"/>
+                      <apex:outputLabel value="{!$Label.site.password}" for="password"/>
+                      <apex:inputSecret id="password" value="{!password}"/>
+                      <apex:outputLabel value="{!$Label.site.confirm_password}" for="confirmPassword"/>
+                      <apex:inputSecret id="confirmPassword" value="{!confirmPassword}"/>
+                      <apex:outputText value=""/>
+                      <apex:commandButton action="{!registerUser}" value="{!$Label.site.submit}" id="submit">
+                      <apex:actionSupport event="onclick" status="theActionStatus" reRender="theForm" >
+                      </apex:actionSupport>
+                      </apex:commandButton>
+                    </apex:panelGrid>
+                    <!--  <apex:panelGrid id="grid">
+                    </apex:panelGrid>-->
+                   <apex:actionStatus id="theActionStatus" layout="block">
+                    <apex:facet name="start">
+                    <div id="assign-action-spinner-main">
+                    <div id="assign-action-spinner-content">
+                    <img src="/img/analytics/reportbuilder/icons/spinner32.gif" alt="Processing..." title="Processing..." /> 
+                    <p>Processing...</p>
+                    </div>
+                    </div>
+                    </apex:facet>
+                    </apex:actionStatus>
+</apex:form>
+     </center>
+      <br/>
+    </apex:define>
+
+</apex:page>

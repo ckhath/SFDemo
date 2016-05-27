@@ -1,0 +1,38 @@
+<apex:page showHeader="false" sidebar="false">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>
+	$( document ).ready(function() {
+  		var centerFrame = true;
+		$("#bodyCell", window.parent.document).children().each(
+     		function(index, elem) 
+     		{
+     			if($(elem).attr('title')!='HP_Header'){
+	     			if(centerFrame)
+	     			{
+	         			$(elem).css("float", "left");
+	         			$(elem).css("margin-right", "2%");
+	         			$(elem).css("overflow", "hidden");
+	         			$(elem).css("width", "68%");
+	         			elem.setAttribute("width","68%");
+	         			//$(elem).after('<div style="float: none; clear: both;"></div>');
+	         		}
+	         		else
+	         		{
+	         			//$(elem).css("display", "block");
+	         			//$(elem).css("float", "right");
+	         			$(elem).css("overflow", "hidden");
+	         			$(elem).css("width", "30%");
+	         			elem.setAttribute("width","30%");	
+	         		    //$(elem).after('<div style="float: none; clear: both;"></div>');
+	         		}
+	     			if($(elem).attr('name')==window.name)
+	     			{
+	     				centerFrame=false;
+	     				$(elem).hide();
+	     			}
+     			}
+     		}
+     	);
+	});
+	</script>
+</apex:page>

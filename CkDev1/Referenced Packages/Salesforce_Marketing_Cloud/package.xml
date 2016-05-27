@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Salesforce_Marketing_Cloud</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <namespacePrefix>MCCA5PROD</namespacePrefix>
+    <types>
+        <members>Salesforce_Marketing_Cloud</members>
+        <name>Application</name>
+    </types>
+    <version>36.0</version>
+</Package>

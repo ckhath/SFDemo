@@ -1,0 +1,27 @@
+<apex:page standardStylesheets="false" sidebar="false"
+	showHeader="false" controller="VolunteerOpportunityClass">
+	<!-- 	<apex:stylesheet value="{!URLFOR($Resource.ImageSlider, 'BxSlider/css/jquery.bxslider.css')}" /> -->
+
+	<head>
+		<apex:stylesheet value="{!$Resource.acfCommStyles}" />
+		<base target="_parent" />
+	</head>
+	<!-- Page Design -->
+	<div class="hp_rightCompWrapper">
+		<!--<div class="hp_header">Volunteer Opportunity</div>-->
+		<div>
+<!-- 			<ul > -->
+				<apex:repeat value="{!HP_VolunteerOppObjList}" var="HP_VolunteerOppObj">
+
+					<a href="{!HP_VolunteerOppObj.Image_Link__c}" target="_blank"><img alt="" class="ImageWrapper"
+							src="{!HP_VolunteerOppObj.Image_Url__c}" /></a>
+
+				</apex:repeat>
+<!-- 			</ul> -->
+		</div>
+	</div>
+	<!-- End Page Design -->
+
+
+
+</apex:page>

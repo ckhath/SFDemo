@@ -1,0 +1,12 @@
+<apex:page showHeader="false" sidebar="false" controller="HP_Chatter">
+	<head>
+		<apex:stylesheet value="{!$Resource.acfCommStyles}" />
+		<base target="_parent" />
+	</head>
+	<body>
+		<div class="hp_centerCompWrapper">
+			<div class="hp_header">Chatter</div>
+			<chatter:feed entityId="{!chatterId}" />
+		</div>
+	</body>
+</apex:page>

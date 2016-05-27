@@ -1,0 +1,208 @@
+<apex:page sidebar="false">
+<style>
+h1 {
+    font-size: 25px;
+}
+</style>
+<br />
+<h1><span style="font-family: Arial,Helvetica,sans-serif; color: black;">Career Services
+</span></h1>
+<br />
+<br />
+<a href="http://students.tufts.edu/career-center/alumni">
+<span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Tufts Alumni Career 
+
+Services</span></u></b></span></span></a>
+<br />
+<br />
+<a href="https://www.linkedin.com/groups/8280010">
+<span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Tufts Career Networking Group 
+
+on LinkedIn</span></u></b></span></span></a>
+<br />
+<br />
+<a href="https://www.myinterfase.com/tufts/employer/"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: 
+
+Arial,Helvetica,sans-serif;">Jumbo Jobs</span></u></b></span></span></a><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">Find or post internships or jobs.
+</span>
+<br />
+<br />
+<a href="https://www.candidcareer.com/do_login.php?u=TuftsUniversity&p=6cf7dcdb1950f873e9280551eb15d8f5">
+<span style="font-size: large;">
+<span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Candid Career</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">Learn about thousands of career paths; watch informational interview career videos.
+</span>
+<br />
+<br />
+<a href="http://cb.careersearch.net/login/tuftsalumni.tt2">
+<span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Career 
+
+Beam</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">A variety of research tools to help you research industries and companies, including a searchable 
+
+database of millions of firms.
+</span>
+<br />
+<br />
+<a href="https://www.facebook.com/tuftscareerservicesambassadors/app/197109987017947/">
+<span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Career 
+
+Spots</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">Watch videos on a variety of career and job search topics. No need to be a Facebook member.
+</span>
+<br />
+<br />
+<a href="http://www.currentjobsforgraduates.com/sub_login.html">
+<span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Current Jobs for 
+
+Graduates</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">Job listings for liberal arts students and recent grads. (User Name - jumbo, Password - career)
+</span>
+<br />
+<br />
+<a href="http://online.goinglobal.com/default.aspx">
+<span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Going 
+
+Global</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">Detailed guides on job search and career culture for more than 40 countries; complete H1B visa 
+
+data for international job seekers seeking US employment.
+</span>
+<br />
+<br />
+<a href="http://spotlightoncareers.org/">
+<span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Spotlight on 
+
+Careers</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">Resources and information for 40 different career fields. (User Name - spotlightaccess, Password - 
+
+liberalarts2015)
+</span>
+<br />
+<br />
+<br /><a name="library"></a>
+<h1><span style="font-family: Arial,Helvetica,sans-serif; color: black;">Library Databases
+</span></h1>
+<br />
+<br />
+<i><span style="font-family: Arial,Helvetica,sans-serif;">Sponsored by the Tufts University Alumni Association and the Tufts libraries 
+</span></i>
+<br />
+<br />
+<a href="http://search.proquest.com/embedded/DSF3K1FMD5D7VTJ1"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-
+
+family: Arial,Helvetica,sans-serif;">ABI/INFORM Research</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">A business, finance, and economics database with full-text articles from nearly 1,400 premier 
+
+business and management journals, in both trade and scholarly fields, such as the Wall Street Journal, Harvard Business Review, and Financial Times of 
+
+London World Business Weekly. Coverage: 1971 - current.
+</span>
+<br />
+<br />
+<a href="http://infotrac.galegroup.com/itweb/mlin_m_tufts?db=EAIM&id=medf54666"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span 
+
+style="font-family: Arial,Helvetica,sans-serif;">Expanded Academic ASAP</span></u></b></span></span></a><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">A multi-disciplinary database offering abstracts or full-text articles from 1,500 scholarly and 
+
+trade journals in a wide variety of fields plus general-interest publications such as Time, Newsweek, and U.S. News and World Report. Coverage: 1980 - 
+
+current; updated daily.
+</span>
+<br />
+<br />
+<a href="https://tufts.force.com/connect/apex/jstor_authorization"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span 
+
+style="font-family: Arial,Helvetica,sans-serif;">JSTOR</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">Full-text back issues of scholarly journals in science, history, economics, political science, 
+
+mathematics, and other fields, with access starting from the first year through to 3 or 5 years ago.
+</span>
+<br />
+<br />
+<a href="http://gateway.ovid.com/ovidweb.cgi?T=JS&MODE=ovid&NEWS=N&PAGE=main&ID=tfhalum&PASSWORD=TUalum1"><span style="font-size: large;"><span 
+
+style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Ovid MEDLINE</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">OVID Medline contains journal citations and abstracts for biomedical literature from around the 
+
+world.  Please note that this is only a citation and abstract index. Full-text content is limited to a select number of Current Opinion journals and 
+
+electronic books.</span>
+<br />
+<br />
+<a href="https://muse.jhu.edu/refer"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-
+
+serif;">Project Muse</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">Project MUSE is a leading provider of digital humanities and social science content for the 
+
+scholarly community.  Since 1995 the MUSE journal collections have supported a wide array of research needs in libraries worldwide. MUSE is the trusted 
+
+source of complete, full-text versions of scholarly journals from many of the world's leading university presses and scholarly societies, with over 120 
+
+publishers currently participating. UPCC Book Collections on Project MUSE, launched in January 2012, offer top quality book-length scholarship, fully 
+
+integrated with MUSE's scholarly journal content.</span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">&nbsp;</span>
+<br />
+<br />
+<a href="https://www.refworks.com/refworks2/?r=authentication::init&groupcode=RWTuftsU"><span style="font-size: large;"><span style="color: 
+
+#0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">RefWorks</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">A powerful online research management, writing, and collaboration tool designed to help 
+
+researchers at all levels easily gather, organize, store, and share all types of information and to instantly generate citations and bibliographies. 
+
+Please Note: The first time you access RefWorks you will need to create a login name and password. After creating a login you can bookmark the RefWorks 
+
+site and log in directly on subsequent visits.&nbsp;</span>
+<br />
+
+<i><span style="font-family: Arial,Helvetica,sans-serif;">For further assistance, contact a Tufts library reference desk:</span></i>
+<br />
+<br />
+<table width="100%">
+<tr ><td width="25%">
+<b><span style="color: #bf9000;"><span style="font-family: Arial,Helvetica,sans-serif;">Ginn Library&nbsp;</span></span></b><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">617-627-5021&nbsp;</span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;"><a href="http://www.library.tufts.edu/ginn/howdoi-ask.shtml">email a question</a>&nbsp;</span><br 
+
+/>
+</td><td width="25%">
+<span style="color: #f1c232;"><b><span style="font-family: Arial,Helvetica,sans-serif;"><span style="color: #bf9000;">Hirsh Health Sciences Library</span>&nbsp;</span></b></span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">617-636-6706&nbsp;</span><br />
+<span style="color: black;"><a href="http://www.library.tufts.edu/hsl/services/ask.html"><span style="font-family: Arial,Helvetica,sans-serif;">email a 
+
+question&nbsp;</span></a></span><br />
+</td><td width="25%">
+<span style="color: #bf9000;"><b><span style="font-family: Arial,Helvetica,sans-serif;">Tisch Library&nbsp;</span></b></span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">617-627-3460&nbsp;</span><br />
+<span style="color: black;"><a href="http://www.library.tufts.edu/tisch/ra/ask_ref_form.htm"><span style="font-family: Arial,Helvetica,sans-serif;">email 
+
+a question</span></a></span><br />
+</td><td width="25%">
+<span style="color: #bf9000;"><b><span style="font-family: Arial,Helvetica,sans-serif;">Webster Library&nbsp;</span></b></span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">508-839-7958 </span>
+</td></tr></table>
+<br />
+<br />
+<br />
+<br /><br />
+<br /><br />
+<br /><br />
+<br /><br />
+<br /><br />
+<br /><br />
+<br /><br />
+</apex:page>

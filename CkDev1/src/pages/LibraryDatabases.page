@@ -1,0 +1,55 @@
+<apex:page sidebar="false">
+
+<i><span style="font-family: Arial,Helvetica,sans-serif;">Sponsored by the Tufts University Alumni Association and the Tufts libraries
+</span></i>
+<br />
+<br />
+<a href="http://search.proquest.com/abicompletealumni/business/?accountid=30684"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">ABI/INFORM Research</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">A business, finance, and economics database with full-text articles from nearly 1,400 premier business and management journals, in both trade and scholarly fields, such as the Wall Street Journal, Harvard Business Review, and Financial Times of London World Business Weekly. Coverage: 1971 - current.
+</span>
+<br />
+<br />
+<a href="http://infotrac.galegroup.com/itweb/mlin_m_tuftsalum?db=EAIM"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Expanded Academic ASAP</span></u></b></span></span></a><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">A multi-disciplinary database offering abstracts or full-text articles from 1,500 scholarly and trade journals in a wide variety of fields plus general-interest publications such as Time, Newsweek, and U.S. News and World Report. Coverage: 1980 - current; updated daily.
+</span>
+<br />
+<br />
+<a href="http://www.jstor.org/"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">JSTOR</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">Full-text back issues of scholarly journals in science, history, economics, political science, mathematics, and other fields, with access starting from the first year through to 3 or 5 years ago.
+</span>
+<br />
+<br />
+<a href="http://gateway.ovid.com/ovidweb.cgi?T=JS&MODE=ovid&NEWS=N&PAGE=main&ID=tfhalum&PASSWORD=TUalum1"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">Ovid MEDLINE</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">A database of international biomedical journal literature including over 11 million citations and abstracts in the fields of medicine, nursing, dentistry, veterinary medicine, healthcare systems, and pre-clinical sciences. The database offers premier functionality including a MeSH thesaurus, full explosion and pre-explosion capability, subheadings, scope notes, and permuted index browsing, coverage, 1950-current; updated daily. Beginning July 2012 we will be moving from providing access to the Current Opinion titles to providing electronic access to Doody's Essential Collection 2011 of fifty current Lippincott medical textbooks.
+</span>
+
+<br />
+<br />
+<a href="https://www.refworks.com/refworks2/?r=authentication::init&amp;groupcode=RWTuftsU"><span style="font-size: large;"><span style="color: #0b5394;"><b><u><span style="font-family: Arial,Helvetica,sans-serif;">RefWorks</span></u></b></span></span></a>
+<br />
+<span style="font-family: Arial,Helvetica,sans-serif;">A powerful online research management, writing, and collaboration tool designed to help researchers at all levels easily gather, organize, store, and share all types of information and to instantly generate citations and bibliographies. Please Note: The first time you access RefWorks you will need to create a login name and password. After creating a login you can bookmark the RefWorks site and log in directly on subsequent visits.&nbsp;</span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">&nbsp;</span>
+<br />
+<i><span style="font-family: Arial,Helvetica,sans-serif;">For further assistance, contact a Tufts library reference desk:</span></i>
+<br />
+<br />
+<b><span style="color: #bf9000;"><span style="font-family: Arial,Helvetica,sans-serif;">Ginn Library&nbsp;</span></span></b><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">617-627-5021&nbsp;</span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;"><a href="http://www.library.tufts.edu/ginn/howdoi-ask.shtml">email a question</a>&nbsp;</span><br />
+<br />
+<span style="color: #f1c232;"><b><span style="font-family: Arial,Helvetica,sans-serif;"><span style="color: #bf9000;">Health Sciences Library</span></span></b></span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">617-636-6706&nbsp;</span><br />
+<span style="color: black;"><a href="http://www.library.tufts.edu/hsl/services/ask.html"><span style="font-family: Arial,Helvetica,sans-serif;">email a question</span></a></span><br />
+<br />
+<span style="color: #bf9000;"><b><span style="font-family: Arial,Helvetica,sans-serif;">Tisch Library&nbsp;</span></b></span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">617-627-3460&nbsp;</span><br />
+<span style="color: black;"><a href="http://www.library.tufts.edu/tisch/ra/ask_ref_form.htm"><span style="font-family: Arial,Helvetica,sans-serif;">email a question</span></a></span><br />
+<br />
+<span style="color: #bf9000;"><b><span style="font-family: Arial,Helvetica,sans-serif;">Webster Library&nbsp;</span></b></span><br />
+<span style="font-family: Arial,Helvetica,sans-serif;">508-839-7958 </span>
+
+
+</apex:page>
